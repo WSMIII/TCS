@@ -338,3 +338,7 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/TCS/docs/certificates
+/TCS/docs/pdfs
+/TCS/graphics
+/TCS/EnvironmentData.cs

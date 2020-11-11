@@ -1,0 +1,104 @@
+﻿<Application x:Class="TCS.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:TCS"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <Style TargetType="TextBlock" x:Key="HeavyText">
+                <Setter Property="FontFamily" Value="Georgia" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="Foreground" Value="#4f649d" />
+            </Style>
+            <Style TargetType="TextBlock" x:Key="LightText">
+                <Setter Property="FontFamily" Value="Georgia" />
+                <Setter Property="FontWeight" Value="Light" />
+                <Setter Property="Foreground" Value="#4f649d" />
+            </Style>
+            <Style TargetType="Button" x:Key="BaseButton1">
+                <Setter Property="FontFamily" Value="Georgia" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="Foreground" Value="#4f649d" />
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="50" BorderBrush="#4f649d" BorderThickness="3">
+                                <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                <Border.Background>
+                                    <SolidColorBrush x:Name="ButtonBackground" Color="#fcfcf2" />
+                                </Border.Background>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal" />
+                                        <VisualState x:Name="MouseOver">
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetName="ButtonBackground" Storyboard.TargetProperty="Color" From="#fcfcf2" To="#e8e6e6" Duration="0:0:0.15"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="Button" x:Key="BaseButton2">
+                <Setter Property="FontFamily" Value="Georgia" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="Foreground" Value="#4f649d" />
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="25" BorderBrush="#4f649d" BorderThickness="3">
+                                <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                <Border.Background>
+                                    <SolidColorBrush x:Name="ButtonBackground" Color="#dcd6ff" />
+                                </Border.Background>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal" />
+                                        <VisualState x:Name="MouseOver">
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetName="ButtonBackground" Storyboard.TargetProperty="Color" From="#dcd6ff" To="#e8e6e6" Duration="0:0:0.15"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="Button" x:Key="BaseButton3">
+                <Setter Property="FontFamily" Value="Georgia" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="Foreground" Value="#4f649d" />
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="25" BorderBrush="#4f649d" BorderThickness="3">
+                                <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                <Border.Background>
+                                    <SolidColorBrush x:Name="ButtonBackground" Color="#fcfcf2" />
+                                </Border.Background>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal" />
+                                        <VisualState x:Name="MouseOver">
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetName="ButtonBackground" Storyboard.TargetProperty="Color" From="#fcfcf2" To="#dcd6ff" Duration="0:0:0.15"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,66 @@
+﻿<Page x:Class="TCS.Home"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TCS"
+      mc:Ignorable="d" 
+      d:Width="1400" d:Height="800"
+      Background="#fcfcf2">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto">
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_Home" />
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New Certificate" Click="new_Click" />
+                    <MenuItem Header="_Open Certificate" Click="open_Click" />
+                </MenuItem>
+                <MenuItem Header="_Redeem Certificate" Click="redeem_Click" />
+                <MenuItem Header="_Settings" Click="settings_Click"/>
+            </Menu>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="160"/>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Rectangle Grid.Column="0" Fill="#e8e6e6"/>
+                    <Rectangle Grid.Column="1" Fill="#e8e6e6"/>
+                    <Rectangle Grid.Column="2" Fill="#dcd6ff"/>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="# of certificates this year" HorizontalAlignment="Center" Margin="0,80,0,0" Padding="15,0,15,0" Grid.Row="0" Grid.Column="0" Style="{StaticResource HeavyText}" FontSize="25" />
+                            <TextBlock x:Name="yearAmount" HorizontalAlignment="Center" Margin="0,100,0,0" Grid.Row="0" Grid.Column="0" Style="{StaticResource HeavyText}" FontSize="50" />
+                            <TextBlock Text="# of certificates this month" HorizontalAlignment="Center" Margin="0,200,0,0" Padding="15,0,15,0" Grid.Row="0" Grid.Column="0" Style="{StaticResource HeavyText}" FontSize="25" />
+                            <TextBlock x:Name="monthAmount" HorizontalAlignment="Center" Margin="0,220,0,0" Grid.Row="0" Grid.Column="0" Style="{StaticResource HeavyText}" FontSize="50" />
+                            <TextBlock Text="# of active certificates" HorizontalAlignment="Center" Margin="0,80,0,0" Padding="15,0,15,0" Grid.Row="0" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="25" />
+                            <TextBlock x:Name="activeAmount" HorizontalAlignment="Center" Margin="0,100,0,0" Grid.Row="0" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="50" />
+                            <TextBlock Text="# of redeemed certificates" HorizontalAlignment="Center" Margin="0,200,0,0" Padding="15,0,15,0" Grid.Row="0" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="25" />
+                            <TextBlock x:Name="redeemedAmount" HorizontalAlignment="Center" Margin="0,220,0,0" Grid.Row="0" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="50" />
+                        </Grid>
+                    </Grid>
+                    <Button x:Name="createCert" Click="createCert_Click" Style="{StaticResource BaseButton1}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,100,0,0" Content="Create Certificate" Grid.Column="2" Width="400" Height="75" FontSize="30" />
+                    <Button x:Name="openCert" Click="openCert_Click" Style="{StaticResource BaseButton1}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,200,0,0" Content="Open Certificate" Grid.Column="2" Width="400" Height="75" FontSize="30" />
+                    <Button x:Name="redeemCert" Click="redeemCert_Click" Style="{StaticResource BaseButton1}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,300,0,0" Content="Redeem Certificate" Grid.Column="2" Width="400" Height="75" FontSize="30" />
+                    <Button x:Name="exitSys" Click="exitSys_Click" Style="{StaticResource BaseButton1}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,400,0,0" Content="Exit" Grid.Column="2" Width="400" Height="75" FontSize="30" />
+                </Grid>
+                <Image Source="D:\VS Repos\Applications\TCS\TCS\graphics\TCS_home_img.png" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" />
+            </Grid>
+        </DockPanel>
+    </ScrollViewer>
+</Page>
