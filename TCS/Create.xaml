@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:TCS"
       mc:Ignorable="d" 
       d:Width="1400" d:Height="800" 
-      Background="#fcfcf2" d:DesignHeight="955.164">
+      Background="#fcfcf2" d:DesignHeight="1101.272">
     <ScrollViewer HorizontalScrollBarVisibility="Auto">
         <DockPanel>
             <Frame Name="MainFrame">
@@ -66,22 +66,26 @@
                     <TextBox x:Name="message" TextWrapping="Wrap" Width="960" Height="320" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,360,0,0" Grid.Column="0" FontSize="16" />
                     <TextBlock Text="Enter the amount of times the certificate can be redeemed. If unlimited enter *: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,695,0,0" Grid.Column="0" Style="{StaticResource HeavyText}" FontSize="17" />
                     <TextBox x:Name="redeemAmount" Width="50" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="715,694,0,20" Grid.Column="0" FontSize="17" />
-                    <Button x:Name="generateCert" Click="generateCert_Click"  Style="{StaticResource BaseButton1}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,670,0,0" Content="Create" Grid.Column="1" Width="300" Height="75" FontSize="30" />
+                    <Button x:Name="generateCert" Click="generateCert_Click"  Style="{StaticResource BaseButton1}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,885,0,20" Content="Create" Grid.Column="1" Width="300" Height="75" FontSize="30" />
                     
-                    <TextBlock x:Name="checkBoxTitle" Text="Are you sure? Check info for errors." TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0" Grid.Column="1" Width="300" Style="{StaticResource HeavyText}" FontSize="25" />
-                    <TextBlock Text="To" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,100,0,0" Grid.Column="1" Width="350" Style="{StaticResource HeavyText}" FontSize="20" />
-                    <TextBlock x:Name="toText" Text="To" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,120,0,0" Grid.Column="1" Width="350" Style="{StaticResource LightText}" FontSize="20" />
-                    <TextBlock Text="From" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,150,0,0" Grid.Column="1" Width="350" Style="{StaticResource HeavyText}" FontSize="20" />
-                    <TextBlock x:Name="fromText" Text="From" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,170,0,0" Grid.Column="1" Width="350" Style="{StaticResource LightText}" FontSize="20" />
-                    <TextBlock Text="Service" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,200,0,0" Grid.Column="1" Width="350" Style="{StaticResource HeavyText}" FontSize="20" />
-                    <TextBlock x:Name="serviceText" Text="Service" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,220,0,0" Grid.Column="1" Width="350" Style="{StaticResource LightText}" FontSize="20" />
-                    <TextBlock Text="Amount" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,250,0,0" Grid.Column="1" Width="350" Style="{StaticResource HeavyText}" FontSize="20" />
-                    <TextBlock x:Name="amountText" Text="Amount" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,270,0,0" Grid.Column="1" Width="350" Style="{StaticResource LightText}" FontSize="20" />
-                    <TextBlock Text="Email" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,300,0,0" Grid.Column="1" Width="350" Style="{StaticResource HeavyText}" FontSize="20" />
-                    <TextBlock x:Name="emailText" Text="Email" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,320,0,0" Grid.Column="1" Width="350" Style="{StaticResource LightText}" FontSize="20" />
-                    <TextBlock Text="Message" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,350,0,0" Grid.Column="1" Width="350" Style="{StaticResource HeavyText}" FontSize="20" />
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="0,375,0,0" Width="350" Height="280">
-                        <TextBlock x:Name="messageText" Text="MESSAGE" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Width="350" Height="280" Style="{StaticResource LightText}" FontSize="12" />
+                    <TextBlock x:Name="checkBoxTitle" Text="Click 'Create' when ready" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0" Grid.Column="1" Width="300" Style="{StaticResource HeavyText}" FontSize="25" />
+                    <TextBlock x:Name="toTextBase" Text="To" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,150,0,0" Grid.Column="1" Width="350" Style="{StaticResource HeavyText}" FontSize="20" />
+                    <TextBlock x:Name="toText" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,175,0,0" Grid.Column="1" Width="350" Style="{StaticResource LightText}" FontSize="20" />
+                    <TextBlock x:Name="fromTextBase" Text="From" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,220,0,0" Grid.Column="1" Width="350" Style="{StaticResource HeavyText}" FontSize="20" />
+                    <TextBlock x:Name="fromText" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,245,0,0" Grid.Column="1" Width="350" Style="{StaticResource LightText}" FontSize="20" />
+                    <TextBlock x:Name="serviceTextBase" Text="Service" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,430,0,0" Grid.Column="1" Width="350" Style="{StaticResource HeavyText}" FontSize="20" />
+                    <TextBlock x:Name="serviceText" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,455,0,0" Grid.Column="1" Width="350" Style="{StaticResource LightText}" FontSize="20" />
+                    <TextBlock x:Name="amountTextBase" Text="Amount" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,500,0,0" Grid.Column="1" Width="350" Style="{StaticResource HeavyText}" FontSize="20" />
+                    <TextBlock x:Name="amountText" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,525,0,0" Grid.Column="1" Width="350" Style="{StaticResource LightText}" FontSize="20" />
+                    <TextBlock x:Name="toEmailTextBase" Text="Recipient Email" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,290,0,0" Grid.Column="1" Width="350" Style="{StaticResource HeavyText}" FontSize="20" />
+                    <TextBlock x:Name="toEmailText" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,315,0,0" Grid.Column="1" Width="350" Style="{StaticResource LightText}" FontSize="20" />
+                    <TextBox x:Name="toEmailTextBox" Visibility="Collapsed" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,315,0,0" Grid.Column="1" Width="300" Height="20" FontFamily="Georgia" FontWeight="Light" FontSize="17" Foreground="#4f649d" />
+                    <TextBlock x:Name="fromEmailTextBase" Text="Sender Email" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,360,0,0" Grid.Column="1" Width="350" Style="{StaticResource HeavyText}" FontSize="20" />
+                    <TextBlock x:Name="fromEmailText" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,385,0,0" Grid.Column="1" Width="350" Style="{StaticResource LightText}" FontSize="20" />
+                    <TextBox x:Name="fromEmailTextBox" Visibility="Collapsed" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,385,0,0" Grid.Column="1" Width="300" Height="20" FontFamily="Georgia" FontWeight="Light" FontSize="17" Foreground="#4f649d" />
+                    <TextBlock x:Name="messageTextBase" Text="Message" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,570,0,0" Grid.Column="1" Width="350" Style="{StaticResource HeavyText}" FontSize="20" />
+                    <ScrollViewer HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Column="1" Margin="0,595,0,0" Width="350" Height="280">
+                        <TextBlock x:Name="messageText" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="350" Height="2000" Style="{StaticResource LightText}" FontSize="12" />
                     </ScrollViewer>
                 </Grid>
                 <Button x:Name="backButton" Click="backButton_Click"  Style="{StaticResource BaseButton2}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15" Grid.Row="0" Width="100" Height="50">

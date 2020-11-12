@@ -79,14 +79,19 @@ namespace TCS
                 cert = Core.lookupCert(email.Text.ToString(), 2);
                 connectToCertificate(cert);
             }
+            /*else if (email.Text.ToString().Length > 0)
+            {
+                cert = Core.lookupCert(email.Text.ToString(), 3);
+                connectToCertificate(cert);
+            } Implement later */
             else if (code.Text.ToString().Length > 0)
             {
-                cert = Core.lookupCert(code.Text.ToString(), 3);
+                cert = Core.lookupCert(code.Text.ToString(), 4);
                 connectToCertificate(cert);
             }
             else if (id.Text.ToString().Length > 0)
             {
-                cert = Core.lookupCert(id.Text.ToString(), 4);
+                cert = Core.lookupCert(id.Text.ToString(), 5);
                 connectToCertificate(cert);
             }
         }
@@ -102,7 +107,7 @@ namespace TCS
                 fromInfo.Text = in_cert.fromName;
                 dateInfo.Text = in_cert.date.ToString();
                 expDateInfo.Text = in_cert.expDate.ToString();
-                emailInfo.Text = in_cert.email;
+                //emailInfo.Text = in_cert.email;
                 serviceInfo.Text = in_cert.service;
                 serviceAmountInfo.Text = "$" + in_cert.amount.ToString();
                 messageInfo.Text = in_cert.code;

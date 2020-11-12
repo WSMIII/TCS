@@ -35,6 +35,7 @@ namespace TCS
         void new_Click(object sender, RoutedEventArgs e)
         {
             window_h.lastPage = 1;
+            window_h.states.create.baseState();
             window_h.Content = window_h.states.create;
             
         }
@@ -60,6 +61,7 @@ namespace TCS
         void createCert_Click(object sender, RoutedEventArgs e)
         {
             window_h.lastPage = 1;
+            window_h.states.create.baseState();
             window_h.Content = window_h.states.create;
         }
 

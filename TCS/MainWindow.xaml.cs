@@ -24,19 +24,18 @@ namespace TCS
         readonly public struct PageStates
         {
             public Home home { get; }
+            public Settings settings { get; }
             public Create create { get; }
             public Open open { get; }
-
             public Redeem redeem { get; }
-            public Settings settings { get; }
 
-            public PageStates(Home in_home, Create in_create, Open in_open, Redeem in_redeem, Settings in_settings)
+            public PageStates(Home in_home, Settings in_settings, Create in_create, Open in_open, Redeem in_redeem)
             {
                 this.home = in_home;
+                this.settings = in_settings;
                 this.create = in_create;
                 this.open = in_open;
                 this.redeem = in_redeem;
-                this.settings = in_settings;
             }
         }
         public PageStates states;
@@ -47,7 +46,7 @@ namespace TCS
             InitializeComponent();
             Core.initCore();
 
-            states = new PageStates(new Home(this), new Create(this), new Open(this), new Redeem(this), new Settings(this));
+            states = new PageStates(new Home(this), new Settings(this), new Create(this), new Open(this), new Redeem(this));
             this.Content = states.home;
         }
 

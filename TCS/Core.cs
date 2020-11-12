@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using PdfSharp.Drawing.Layout;
 using System.CodeDom.Compiler;
+using System.Runtime.CompilerServices;
 
 namespace TCS
 {
@@ -36,6 +37,7 @@ namespace TCS
 
         //CURRENT CERTIFICATES
         static List<string> ids = new List<string>();
+        static List<EmailInfo> emailQueue = new List<EmailInfo>();
 
         public static int getAmountAllTime()
         {
@@ -101,16 +103,19 @@ namespace TCS
             writeMain();
             writeIDs();
             writeSettings(in_settings);
-            //SendMail().Wait();
+            for (int i = 0; i < emailQueue.Count; i++)
+            {
+                SendMail(emailQueue[i]).Wait();
+            }
         }
 
-        public static void createCert(string in_name, string in_fName, string in_email, string in_message, string in_service, double in_amount, int in_rAmount, DateTime in_date, Settings in_settings)
+        public static void createCert(string in_name, string in_fName, string in_toEmail, string in_fromEmail, string in_message, string in_service, double in_amount, int in_rAmount, DateTime in_date, Settings in_settings)
         {
-            Certificate cert = new Certificate(in_name, in_fName, in_email, in_message, in_service, in_amount, in_rAmount, in_date, in_settings);
-            //ids.Add(cert.id);
+            Certificate cert = new Certificate(in_name, in_fName, in_toEmail, in_fromEmail, in_message, in_service, in_amount, in_rAmount, in_date, in_settings);
+            ids.Add(cert.id);
 
-            //writeCert(cert);
-            //createPDF(cert);
+            writeCert(cert);
+            createPDF(cert);
 
             amountAllTime += 1;
             amountYear += 1;
@@ -140,10 +145,17 @@ namespace TCS
                     for (int i = 0; i < ids.Count; i++)
                     {
                         Certificate temp = new Certificate("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\certificates\\" + ids[i] + ".tcs");
-                        if (in_text == temp.email) return temp;
+                        if (in_text == temp.toEmail) return temp;
                     }
                     break;
                 case 3:
+                    for (int i = 0; i < ids.Count; i++)
+                    {
+                        Certificate temp = new Certificate("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\certificates\\" + ids[i] + ".tcs");
+                        if (in_text == temp.fromEmail) return temp;
+                    }
+                    break;
+                case 4:
                     for (int i = 0; i < ids.Count; i++)
                     {
                         Certificate temp = new Certificate("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\certificates\\" + ids[i] + ".tcs");
@@ -176,6 +188,12 @@ namespace TCS
                 }
             }
             return new Certificate();
+        }
+
+        public static void queueEmail(string in_toName, string in_fromName, string in_toEmail, string in_fromEmail)
+        {
+            EmailInfo info = new EmailInfo(ids[ids.Count - 1], in_toName, in_fromName, in_toEmail, in_fromEmail);
+            emailQueue.Add(info);
         }
 
         static void readMain()
@@ -294,7 +312,8 @@ namespace TCS
             sw.WriteLine(in_cert.id);
             sw.WriteLine(in_cert.name);
             sw.WriteLine(in_cert.fromName);
-            sw.WriteLine(in_cert.email);
+            sw.WriteLine(in_cert.toEmail);
+            sw.WriteLine(in_cert.fromEmail);
             sw.WriteLine(in_cert.message);
             sw.WriteLine(in_cert.service);
             sw.WriteLine(in_cert.amount);
@@ -374,20 +393,41 @@ namespace TCS
             tf.DrawString(in_cert.message, font_normal, blueBrush, msg_Rect);
             tf.DrawString(tempCode, font_bigBold, blueBrush, code_Rect);
 
-            document.Save("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\pdfs\\4"/* + in_cert.id*/ + "_pdf.pdf");
+            document.Save("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\pdfs\\" + in_cert.id + "_pdf.pdf");
         }
 
-        static async Task SendMail()
+        static async Task SendMail(EmailInfo in_info)
         {
             var apiKey = EnvironmentData.SENDGRID_APIKEY;
             var client = new SendGridClient(apiKey);
             var message = new SendGridMessage();
-            message.SetFrom(new EmailAddress("ceo@oustentertainment.com", "Contact Us"));
-            message.AddTo(new EmailAddress("ceo@oustentertainment.com", "Contact Us"));
-            message.SetSubject("TEST");
-            message.AddContent(MimeType.Text, "Dear bla bla bla");
+            message.SetFrom(new EmailAddress("deb@debrataubenslag.com", "Debra Taubenslag"));
+            message.AddTo(new EmailAddress(in_info.toEmail, in_info.toName));
+            message.AddCc(new EmailAddress(in_info.fromEmail, in_info.fromName));
+            message.AddCc(new EmailAddress("deb@debrataubenslag.com", "Debra Taubenslag"));
+            message.SetSubject("A Transformational Gift From " + in_info.fromName);
+            message.AddContent(MimeType.Html, "<p style=\"font-family:'Georgia';color:#4f649d\"><strong style=\"font-size:25px\">Surprise " + in_info.toName + "!!</strong><br />" + in_info.fromName + " has sent you a Gift Certificate for the transformational healing services of <strong><i>Debra Taubenslag</i></strong>.<br />Be sure to download and save the attached certificate for future use.<br />To learn more about <strong><i>Debra Taubenslag</i></strong> and what you can use this certificate for please go to <a href=\"https://www.debrataubenslag.com\">debrataubenslag.com.</a><br /><br />Yours Truly,<br /><i style=\"font-size:25px\">Debra Taubenslag</i><br /><i>The Transformational Mentor</i></p>");
+            message.AddAttachment("TCS_Gift_Certificate_" + in_info.id + ".pdf", Convert.ToBase64String(File.ReadAllBytes("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\pdfs\\" + in_info.id + "_pdf.pdf")));
 
-            var response = await client.SendEmailAsync(message);
+            var response = await client.SendEmailAsync(message).ConfigureAwait(false);
+        }
+
+        public struct EmailInfo
+        {
+            public string id { get; }
+            public string toName { get; }
+            public string fromName { get; }
+            public string toEmail { get; }
+            public string fromEmail { get; }
+
+            public EmailInfo(string in_id, string in_toName, string in_fromName, string in_toEmail, string in_fromEmail)
+            {
+                id = in_id;
+                toName = in_toName;
+                fromName = in_fromName;
+                toEmail = in_toEmail;
+                fromEmail = in_fromEmail;
+            }
         }
 
         public class Certificate
@@ -395,7 +435,8 @@ namespace TCS
             public string id;
             public string name;
             public string fromName;
-            public string email;
+            public string toEmail;
+            public string fromEmail;
             public string message;
             public string service;
             public string code;
@@ -413,7 +454,8 @@ namespace TCS
                 id = in_other.id;
                 name = in_other.name;
                 fromName = in_other.fromName;
-                email = in_other.email;
+                toEmail = in_other.toEmail;
+                fromEmail = in_other.fromEmail;
                 message = in_other.message;
                 service = in_other.service;
                 amount = in_other.amount;
@@ -423,11 +465,12 @@ namespace TCS
 
                 generateCode();
             }
-            public Certificate(string in_name, string in_fName, string in_email, string in_message, string in_service, double in_amount, int in_rAmount, DateTime in_date, Settings in_settings)
+            public Certificate(string in_name, string in_fName, string in_toEmail, string in_fromEmail, string in_message, string in_service, double in_amount, int in_rAmount, DateTime in_date, Settings in_settings)
             {
                 name = in_name;
                 fromName = in_fName;
-                email = in_email;
+                toEmail = in_toEmail;
+                fromEmail = in_fromEmail;
                 message = in_message;
                 service = in_service;
                 amount = in_amount;
@@ -443,7 +486,7 @@ namespace TCS
                 StreamReader sr = new StreamReader(in_path);
                 string line = sr.ReadLine();
 
-                for (int i = 0; i < 11; i++)
+                for (int i = 0; i < 12; i++)
                 {
                     switch (i)
                     {
@@ -457,24 +500,27 @@ namespace TCS
                             fromName = line;
                             break;
                         case 3:
-                            email = line;
+                            toEmail = line;
                             break;
                         case 4:
-                            message = line;
+                            fromEmail = line;
                             break;
                         case 5:
-                            service = line;
+                            message = line;
                             break;
                         case 6:
-                            amount = Double.Parse(line);
+                            service = line;
                             break;
                         case 7:
-                            date = DateTime.Parse(line);
+                            amount = Double.Parse(line);
                             break;
                         case 8:
-                            expDate = DateTime.Parse(line);
+                            date = DateTime.Parse(line);
                             break;
                         case 9:
+                            expDate = DateTime.Parse(line);
+                            break;
+                        case 10:
                             int tempAmount = Int32.Parse(line);
                             redeem = new bool[tempAmount];
 
@@ -484,7 +530,7 @@ namespace TCS
                                 redeem[j] = Boolean.Parse(line);
                             }
                             break;
-                        case 10:
+                        case 11:
                             code = line;
                             break;
                     }
@@ -507,7 +553,7 @@ namespace TCS
 
             void generateID()
             {
-                string tempID = name[0].ToString() + fromName[0].ToString() + email[0].ToString() + message[0].ToString() + service[2].ToString() + service[10].ToString() + redeem.Length.ToString();
+                string tempID = name[0].ToString() + fromName[0].ToString() + toEmail[0].ToString() + fromEmail[0].ToString() + message[0].ToString() + service[2].ToString() + service[10].ToString() + redeem.Length.ToString();
                 int multiple = 0;
 
                 for (int i = 0; i < ids.Count; i++)
