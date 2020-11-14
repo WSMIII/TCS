@@ -43,6 +43,7 @@ namespace TCS
         void open_Click(object sender, RoutedEventArgs e)
         {
             window_h.lastPage = 1;
+            window_h.states.open.baseState();
             window_h.Content = window_h.states.open;
         }
 
@@ -68,6 +69,7 @@ namespace TCS
         void openCert_Click(object sender, RoutedEventArgs e)
         {
             window_h.lastPage = 1;
+            window_h.states.open.baseState();
             window_h.Content = window_h.states.open;
         }
 

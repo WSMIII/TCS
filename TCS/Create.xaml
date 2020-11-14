@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:TCS"
       mc:Ignorable="d" 
       d:Width="1400" d:Height="800" 
-      Background="#fcfcf2" d:DesignHeight="1101.272">
+      Background="#fcfcf2">
     <ScrollViewer HorizontalScrollBarVisibility="Auto">
         <DockPanel>
             <Frame Name="MainFrame">
