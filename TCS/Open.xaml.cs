@@ -13,13 +13,11 @@ using System.Windows.Shapes;
 
 namespace TCS
 {
-    /// <summary>
-    /// Interaction logic for Open.xaml
-    /// </summary>
     public partial class Open : Page
     {
         MainWindow window_o;
 
+        // CONSTRUCTOR
         public Open(MainWindow in_window)
         {
             InitializeComponent();
@@ -27,8 +25,10 @@ namespace TCS
             window_o = in_window;
         }
 
+        // RESET PAGE TO BLANK SLATE
         public void baseState()
         {
+            // RESETTING DATA FIELDS IN LOOKUP FORM
             toName.Text = "";
             fromName.Text = "";
             toEmail.Text = "";
@@ -36,6 +36,7 @@ namespace TCS
             code.Text = "";
             id.Text = "";
 
+            // RESETTING DATA FIELDS IN PRIMARY FORM
             toInfo.Text = "";
             fromInfo.Text = "";
             toEmailInfo.Text = "";
@@ -50,40 +51,70 @@ namespace TCS
             redeemInfo.Text = "";
         }
 
-        private void home_Click(object sender, RoutedEventArgs e)
+        // NAVIGATION FUNCTIONS
+        void home_Click(object sender, RoutedEventArgs e)
         {
             window_o.lastPage = 4;
+            window_o.states.home.baseState();
             window_o.Content = window_o.states.home;
         }
-
-        private void new_Click(object sender, RoutedEventArgs e)
+        void new_Click(object sender, RoutedEventArgs e)
         {
             window_o.lastPage = 4;
+            window_o.states.create.baseState();
             window_o.Content = window_o.states.create;
         }
-        private void open_Click(object sender, RoutedEventArgs e)
+        void open_Click(object sender, RoutedEventArgs e)
         {
             window_o.lastPage = 4;
+            window_o.states.open.baseState();
             window_o.Content = window_o.states.open;
         }
-        private void redeem_Click(object sender, RoutedEventArgs e)
+        void redeem_Click(object sender, RoutedEventArgs e)
         {
             window_o.lastPage = 4;
+            window_o.states.redeem.baseState();
             window_o.Content = window_o.states.redeem;
         }
-
-        private void settings_Click(object sender, RoutedEventArgs e)
+        void settings_Click(object sender, RoutedEventArgs e)
         {
             window_o.lastPage = 4;
+            window_o.states.settings.baseState();
             window_o.Content = window_o.states.settings;
         }
-
-        private void backButton_Click(object sender, RoutedEventArgs e)
+        void backButton_Click(object sender, RoutedEventArgs e)
         {
-
+            switch (window_o.lastPage)
+            {
+                case 1:
+                    window_o.lastPage = 4;
+                    window_o.Content = window_o.states.home;
+                    break;
+                case 2:
+                    window_o.lastPage = 4;
+                    window_o.states.settings.baseState();
+                    window_o.Content = window_o.states.settings;
+                    break;
+                case 3:
+                    window_o.lastPage = 4;
+                    window_o.states.create.baseState();
+                    window_o.Content = window_o.states.create;
+                    break;
+                case 4:
+                    window_o.lastPage = 4;
+                    window_o.states.open.baseState();
+                    window_o.Content = window_o.states.open;
+                    break;
+                case 5:
+                    window_o.lastPage = 4;
+                    window_o.states.redeem.baseState();
+                    window_o.Content = window_o.states.redeem;
+                    break;
+            }
         }
 
-        private void lookupCert_Click(object sender, RoutedEventArgs e)
+        // LOOKUP CERTIFICATE BUTTON
+        void lookupCert_Click(object sender, RoutedEventArgs e)
         {
             Core.Certificate cert;
 
@@ -119,69 +150,45 @@ namespace TCS
             }
         }
 
-        private void connectToCertificate(Core.Certificate in_cert)
+        // CONNECTION DATA TO DATA FIELDS
+        void connectToCertificate(Core.Certificate in_cert)
         {
             int amountRedeemed = 0;
             int maxAmountUse = 0;
 
-            if (in_cert.name != "DOES NOT EXIST")
+            if (in_cert.name != "DOES NOT EXIST") // WAS FOUND
             {
-                string tempDate = in_cert.date.ToString();
-                string tempExpDate = in_cert.expDate.ToString();
-
-                for (int i = 0; i < 11; i++)
-                {
-                    tempDate = tempDate.Remove(tempDate.Length - 1);
-                    tempExpDate = tempExpDate.Remove(tempExpDate.Length - 1);
-                }
-
                 toInfo.Text = in_cert.name;
                 fromInfo.Text = in_cert.fromName;
-                dateInfo.Text = tempDate;
-                expDateInfo.Text = tempExpDate;
+                dateInfo.Text = Core.TrimDate(in_cert.date); 
+                expDateInfo.Text = Core.TrimDate(in_cert.expDate);
                 toEmailInfo.Text = in_cert.toEmail;
                 fromEmailInfo.Text = in_cert.fromEmail;
                 serviceInfo.Text = in_cert.service;
                 serviceAmountInfo.Text = "$" + in_cert.amount.ToString();
                 messageInfo.Text = in_cert.message;
 
-                for (int i = 0; i < in_cert.Redeem.Length; i++)
+                for (int i = 0; i < in_cert.Redeem.Length; i++) // HOW MANY HAVE BEEN REDEEMED
                 {
-                    if (in_cert.Redeem[i])
-                    {
-                        amountRedeemed++;
-                    }
+                    amountRedeemed += (in_cert.Redeem[i]) ? 1 : 0;
                 }
-                maxAmountUse = in_cert.Redeem.Length;
+                maxAmountUse = in_cert.Redeem.Length; // HOW MANY TIMES CAN IT BE REDEEMED
 
                 amountInfo.Text = maxAmountUse.ToString();
                 redeemText.Text = "This has been redeemed " + amountRedeemed.ToString() + " times on the the dates below.";
 
-                if (amountRedeemed > 0)
+                if (amountRedeemed > 0) // WHETHER TO DISPLAY REDEMPTION TIME STAMPS IF THEY EXIST
                 {
-                    redeemInfo.Text = "";
+                    redeemInfo.Text = ""; // RESETTING TIME STAMP FIELD
 
-                    for (int i = 0; i < amountRedeemed; i++)
+                    for (int i = 0; i < amountRedeemed; i++) // DISPLAYING REDEMPTION TIME STAMPS
                     {
-                        if (in_cert.RedeemDates[i] != new DateTime())
-                        {
-                            string tempRedeemDate = in_cert.RedeemDates[i].ToString();
-
-                            for (int j = 0; j < 11; j++)
-                            {
-                                tempRedeemDate = tempRedeemDate.Remove(tempRedeemDate.Length - 1);
-                            }
-
-                            redeemInfo.Text = redeemInfo.Text.ToString() + (i + 1) + ")   " + tempRedeemDate + "\n";
-                        }
+                        if (in_cert.RedeemDates[i] != new DateTime()) redeemInfo.Text = redeemInfo.Text.ToString() + (i + 1) + ")   " + Core.TrimDate(in_cert.RedeemDates[i]) + "\n";
                     }
                 }
-                else
-                {
-                    redeemInfo.Text = "";
-                }
+                else redeemInfo.Text = "";
             }
-            else
+            else // WASN'T FOUND
             {
                 toInfo.Text = in_cert.name;
                 fromInfo.Text = "N/A";

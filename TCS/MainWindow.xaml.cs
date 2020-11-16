@@ -16,9 +16,6 @@ using System.Windows.Shapes;
 
 namespace TCS
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         readonly public struct PageStates
@@ -38,6 +35,7 @@ namespace TCS
                 this.redeem = in_redeem;
             }
         }
+        
         public PageStates states;
         public int lastPage = 1;
 
@@ -50,7 +48,7 @@ namespace TCS
             this.Content = states.home;
         }
 
-        private void Window_Closed(object sender, EventArgs e)
+        void Window_Closed(object sender, EventArgs e)
         {
             Core.deCore(states.settings);
         }

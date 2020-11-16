@@ -13,13 +13,11 @@ using System.Windows.Shapes;
 
 namespace TCS
 {
-    /// <summary>
-    /// Interaction logic for Create.xaml
-    /// </summary>
     public partial class Create : Page
     {
         private MainWindow window_c;
 
+        // CONSTRUCTOR
         public Create(MainWindow in_window)
         {
             InitializeComponent();
@@ -27,24 +25,17 @@ namespace TCS
             window_c = in_window;
         }
 
+        // RESET PAGE TO BLANK SLATE
         public void baseState()
         {
-            string tempDate = DateTime.Now.ToString();
-            string tempExpDate = DateTime.Now.AddMonths(window_c.states.settings.getMonths()).ToString();
-
-            for (int i = 0; i < 11; i++)
-            {
-                tempDate = tempDate.Remove(tempDate.Length - 1);
-                tempExpDate = tempExpDate.Remove(tempExpDate.Length - 1);
-            }
-
-            certDate.Text = tempDate;
-            expDate.Text = tempExpDate;
-
+            // ADJUST VISIBILITY OF NECCESSARY DATA FIELDS IN THE SECONDARY FORM
             toCertForm();
 
+            // RESETTING DATA FIELDS IN PRIMARY FORM
             toName.Text = "";
             fromName.Text = "";
+            certDate.Text = Core.TrimDate(DateTime.Now);
+            expDate.Text = Core.TrimDate(DateTime.Now.AddMonths(window_c.states.settings.Months));
             comboBox1.Text = "Services";
             serviceAmount.Text = "Amount";
             toEmail.Text = "";
@@ -52,6 +43,7 @@ namespace TCS
             message.Text = "";
             redeemAmount.Text = "";
 
+            // RESETTING DATA FIELDS IN SECONDARY FORM
             checkBoxTitle.Text = "Click 'Create' when ready.";
             toText.Text = "";
             fromText.Text = "";
@@ -63,69 +55,103 @@ namespace TCS
             generateCert.Content = "Create";
         }
 
-        private void home_Click(object sender, RoutedEventArgs e)
+        // NAVIGATION FUNCTIONS
+        void home_Click(object sender, RoutedEventArgs e)
         {
             window_c.lastPage = 3;
+            window_c.states.home.baseState();
             window_c.Content = window_c.states.home;
         }
-
-        private void new_Click(object sender, RoutedEventArgs e)
+        void new_Click(object sender, RoutedEventArgs e)
         {
             window_c.lastPage = 3;
+            window_c.states.create.baseState();
             window_c.Content = window_c.states.create;
         }
-
-        private void open_Click(object sender, RoutedEventArgs e)
+        void open_Click(object sender, RoutedEventArgs e)
         {
             window_c.lastPage = 3;
+            window_c.states.open.baseState();
             window_c.Content = window_c.states.open;
         }
-
-        private void redeem_Click(object sender, RoutedEventArgs e)
+        void redeem_Click(object sender, RoutedEventArgs e)
         {
             window_c.lastPage = 3;
+            window_c.states.redeem.baseState();
             window_c.Content = window_c.states.redeem;
         }
-
-        private void settings_Click(object sender, RoutedEventArgs e)
+        void settings_Click(object sender, RoutedEventArgs e)
         {
             window_c.lastPage = 3;
+            window_c.states.settings.baseState();
             window_c.Content = window_c.states.settings;
         }
-        private void generateCert_Click(object sender, RoutedEventArgs e)
+        void backButton_Click(object sender, RoutedEventArgs e)
         {
-            if (checkBoxTitle.Text.ToString() == "Click 'Create' when ready.")
+            switch(window_c.lastPage)
             {
-                checkBoxTitle.Text = "Are you sure? Check info below to make sure!";
-                connectContent();
-            }
-            else if (checkBoxTitle.Text.ToString() == "Are you sure? Check info below to make sure!")
-            {
-                Core.createCert(toName.Text.ToString(), fromName.Text.ToString(), toEmailText.Text.ToString(), fromEmailText.Text.ToString(), message.Text.ToString(), comboBox1.Text.ToString(), Double.Parse(serviceAmount.Text.ToString()), Int32.Parse(redeemAmount.Text.ToString()), DateTime.Now, window_c.states.settings);
-                checkBoxTitle.Text = "Enter email information below.";
-                toEmailForm();
-                toEmailTextBox.Text = toEmailText.Text.ToString();
-                fromEmailTextBox.Text = fromEmailText.Text.ToString();
-                generateCert.Content = "Email";
-            }
-            else if (checkBoxTitle.Text.ToString() == "Enter email information below.")
-            {
-                Core.queueEmail(toName.Text.ToString(), fromName.Text.ToString(), toEmailTextBox.Text.ToString(), fromEmailTextBox.Text.ToString());
-                toEmptyForm();
-                checkBoxTitle.Text = "Email has been sent. Please click the reset button to create a new certificate.";
+                case 1:
+                    window_c.lastPage = 3;
+                    window_c.Content = window_c.states.home;
+                    break;
+                case 2:
+                    window_c.lastPage = 3;
+                    window_c.states.settings.baseState();
+                    window_c.Content = window_c.states.settings;
+                    break;
+                case 3:
+                    window_c.lastPage = 3;
+                    window_c.states.create.baseState();
+                    window_c.Content = window_c.states.create;
+                    break;
+                case 4:
+                    window_c.lastPage = 3;
+                    window_c.states.open.baseState();
+                    window_c.Content = window_c.states.open;
+                    break;
+                case 5:
+                    window_c.lastPage = 3;
+                    window_c.states.redeem.baseState();
+                    window_c.Content = window_c.states.redeem;
+                    break;
             }
         }
 
-        private void backButton_Click(object sender, RoutedEventArgs e)
+        // CREATE CERTIFICATE BUTTON
+        void generateCert_Click(object sender, RoutedEventArgs e)
         {
-
+            switch(checkBoxTitle.Text.ToString())
+            {
+                // INITIAL CHECK
+                case "Click 'Create' when ready.":
+                    checkBoxTitle.Text = "Are you sure? Check info below to make sure!";
+                    connectContent();
+                    break;
+                // CONFIRMATION CHECK
+                case "Are you sure? Check info below to make sure!":
+                    Core.createCert(toName.Text.ToString(), fromName.Text.ToString(), toEmailText.Text.ToString(), fromEmailText.Text.ToString(), message.Text.ToString(), comboBox1.Text.ToString(), Double.Parse(serviceAmount.Text.ToString()), Int32.Parse(redeemAmount.Text.ToString()), DateTime.Now, window_c.states.settings);
+                    checkBoxTitle.Text = "Enter email information below.";
+                    toEmailForm();
+                    toEmailTextBox.Text = toEmailText.Text.ToString();
+                    fromEmailTextBox.Text = fromEmailText.Text.ToString();
+                    generateCert.Content = "Email";
+                    break;
+                // EMAIL CHECK
+                case "Enter email information below.":
+                    Core.queueEmail(toName.Text.ToString(), fromName.Text.ToString(), toEmailTextBox.Text.ToString(), fromEmailTextBox.Text.ToString());
+                    toEmptyForm();
+                    checkBoxTitle.Text = "Email has been sent. Please click the reset button to create a new certificate.";
+                    break;
+            }            
         }
 
-        private void resetButton_Click(object sender, RoutedEventArgs e)
+        // RESET PAGE BUTTON
+        void resetButton_Click(object sender, RoutedEventArgs e)
         {
             baseState();
         }
 
+        // CONNECTION DATA TO DATA FIELDS
         void connectContent()
         {
             toText.Text = toName.Text.ToString();
@@ -137,6 +163,7 @@ namespace TCS
             messageText.Text = message.Text.ToString();
         }
 
+        // ADJUST VISIBILITY OF DATA FIELDS TO DISPLAY CERTIFICATE INFORMATION
         void toCertForm()
         {
             toText.Visibility = Visibility.Visible;
@@ -157,7 +184,7 @@ namespace TCS
             toEmailTextBox.Visibility = Visibility.Collapsed;
             fromEmailTextBox.Visibility = Visibility.Collapsed;
         }
-
+        // ADJUST VISIBILITY OF DATA FIELDS TO DISPLAY EMAIL INFORMATION
         void toEmailForm()
         {
             toText.Visibility = Visibility.Collapsed;
@@ -178,7 +205,7 @@ namespace TCS
             toEmailTextBox.Visibility = Visibility.Visible;
             fromEmailTextBox.Visibility = Visibility.Visible;
         }
-
+        // ADJUST VISIBILITY OF DATA FIELDS TO HIDDEN
         void toEmptyForm()
         {
             toText.Visibility = Visibility.Collapsed;

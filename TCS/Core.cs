@@ -39,58 +39,16 @@ namespace TCS
         static List<string> ids = new List<string>();
         static List<EmailInfo> emailQueue = new List<EmailInfo>();
 
-        public static int AmountAllTime()
-        {
-            return amountAllTime; 
-        }
+        public static int AmountAllTime { get { return amountAllTime; } }
+        public static int AmountYear { get { return amountYear; } }
+        public static int AmountMonth { get { return amountMonth; } }
+        public static int AmountRedeemed { get { return amountRedeemed; } }
+        public static int AmountActive { get { return amountActive; } }
+        public static int ExpMonthAmount { get { return expAmount; } }
+        public static bool ServiceDisp { get { return serviceDisp; } }
+        public static bool AmountDisp { get { return amountDisp; } }
 
-        public static int getAmountYear()
-        {
-            return amountYear;
-        }
-
-        public static int getAmountMonth()
-        {
-            return amountMonth;
-        }
-
-        public static int getAmountRedeemed()
-        {
-            return amountRedeemed;
-        }
-
-        public static int getAmountActive()
-        {
-            return amountActive;
-        }
-
-        public static int getExpMonthAmount()
-        {
-            return expAmount;
-        }
-
-        public static bool getServiceDisp()
-        {
-            return serviceDisp;
-        }
-
-        public static bool getAmountDisp()
-        {
-            return amountDisp;
-        }
-
-        public static void generateFiles()
-        {
-            StreamWriter sw = new StreamWriter("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\settings.tcs");
-            sw.WriteLine("AMOUNT OF MONTHS UNTIL EXPIRATION");
-            sw.WriteLine(0);
-            sw.WriteLine("DISPLAY SERVICE");
-            sw.WriteLine(true);
-            sw.WriteLine("DISPLAY AMOUNT");
-            sw.WriteLine(true);
-            sw.Close();
-        }
-
+        // CONSTRUCTOR
         public static void initCore()
         {
             readMain();
@@ -98,17 +56,20 @@ namespace TCS
             readSettings();
         }
 
+        // DECONSTRUCTOR
         public static void deCore(Settings in_settings)
         {
             writeMain();
             writeIDs();
             writeSettings(in_settings);
+
             for (int i = 0; i < emailQueue.Count; i++)
             {
                 SendMail(emailQueue[i]).Wait();
             }
         }
 
+        // FEATURES FOR APPLICATION
         public static void createCert(string in_name, string in_fName, string in_toEmail, string in_fromEmail, string in_message, string in_service, double in_amount, int in_rAmount, DateTime in_date, Settings in_settings)
         {
             Certificate cert = new Certificate(in_name, in_fName, in_toEmail, in_fromEmail, in_message, in_service, in_amount, in_rAmount, in_date, in_settings);
@@ -130,42 +91,42 @@ namespace TCS
                 case 0:
                     for (int i = 0; i < ids.Count; i++)
                     {
-                        Certificate temp = new Certificate("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\certificates\\" + ids[i] + ".tcs");
+                        Certificate temp = new Certificate(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + ids[i] + ".tcs");
                         if (in_text == temp.name) return temp;
                     }
                     break;
                 case 1:
                     for (int i = 0; i < ids.Count; i++)
                     {
-                        Certificate temp = new Certificate("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\certificates\\" + ids[i] + ".tcs");
+                        Certificate temp = new Certificate(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + ids[i] + ".tcs");
                         if (in_text == temp.fromName) return temp;
                     }
                     break;
                 case 2:
                     for (int i = 0; i < ids.Count; i++)
                     {
-                        Certificate temp = new Certificate("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\certificates\\" + ids[i] + ".tcs");
+                        Certificate temp = new Certificate(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + ids[i] + ".tcs");
                         if (in_text == temp.toEmail) return temp;
                     }
                     break;
                 case 3:
                     for (int i = 0; i < ids.Count; i++)
                     {
-                        Certificate temp = new Certificate("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\certificates\\" + ids[i] + ".tcs");
+                        Certificate temp = new Certificate(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + ids[i] + ".tcs");
                         if (in_text == temp.fromEmail) return temp;
                     }
                     break;
                 case 4:
                     for (int i = 0; i < ids.Count; i++)
                     {
-                        Certificate temp = new Certificate("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\certificates\\" + ids[i] + ".tcs");
+                        Certificate temp = new Certificate(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + ids[i] + ".tcs");
                         if (in_text == temp.Code) return temp;
                     }
                     break;
                 default:
                     for (int i = 0; i < ids.Count; i++)
                     {
-                        Certificate temp = new Certificate("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\certificates\\" + ids[i] + ".tcs");
+                        Certificate temp = new Certificate(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + ids[i] + ".tcs");
                         if (in_text == temp.ID) return temp;
                     }
                     break;
@@ -177,32 +138,54 @@ namespace TCS
         {
             for (int i = 0; i < ids.Count; i++)
             {
-                Certificate temp = new Certificate("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\certificates\\" + ids[i] + ".tcs");
+                Certificate temp = new Certificate(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + ids[i] + ".tcs");
 
                 if (in_code == temp.Code)
                 {
                     temp.redeemCert();
                     writeCert(temp);
 
-                    if (!temp.redemptionState())
-                    {
-                        amountRedeemed++;
-                    }
+                    if (!temp.redemptionState()) amountRedeemed++;
+                    
                     return temp;
                 }
             }
             return new Certificate();
         }
 
+        // IMPORTANT STATIC FUNCTIONS.
         public static void queueEmail(string in_toName, string in_fromName, string in_toEmail, string in_fromEmail)
         {
             EmailInfo info = new EmailInfo(ids[ids.Count - 1], in_toName, in_fromName, in_toEmail, in_fromEmail);
             emailQueue.Add(info);
         }
 
+        public static string TrimDate(DateTime in_date)
+        {
+            string date = in_date.ToString();
+
+            for (int i = 0; i < 11; i++)
+            {
+                date = date.Remove(date.Length - 1);
+            }
+            return date;
+        }
+
+        public static string FluffCode(string in_code)
+        {
+            string code = "";
+
+            for (int i = 0; i < 11; i++)
+            {
+                code = (i < 10) ? code + in_code.ElementAt<char>(i).ToString() + "  " : code + in_code.ElementAt<char>(i).ToString();
+            }
+            return code;
+        }
+
+        // PRIVATE FUNCTIONS
         static void readMain()
         {
-            StreamReader sr = new StreamReader("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\main.tcs");
+            StreamReader sr = new StreamReader(@"D:\VS Repos\Applications\TCS\TCS\docs\main.tcs");
 
             while (!sr.EndOfStream)
             {
@@ -230,7 +213,7 @@ namespace TCS
 
         static void readIDs()
         {
-            StreamReader sr = new StreamReader("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\ids.tcs");
+            StreamReader sr = new StreamReader(@"D:\VS Repos\Applications\TCS\TCS\docs\ids.tcs");
 
             while (!sr.EndOfStream)
             {
@@ -241,7 +224,7 @@ namespace TCS
 
         static void readSettings()
         {
-            StreamReader sr = new StreamReader("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\settings.tcs");
+            StreamReader sr = new StreamReader(@"D:\VS Repos\Applications\TCS\TCS\docs\settings.tcs");
 
             while (!sr.EndOfStream)
             {
@@ -264,7 +247,8 @@ namespace TCS
         static void writeMain()
         {
             File.Delete(@"D:\VS Repos\Applications\TCS\TCS\docs\main.tcs");
-            StreamWriter sw = new StreamWriter("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\main.tcs");
+
+            StreamWriter sw = new StreamWriter(@"D:\VS Repos\Applications\TCS\TCS\docs\main.tcs");
 
             sw.WriteLine("AMOUNT OF CERTIFICATES CREATED--ALL TIME");
             sw.WriteLine(amountAllTime);
@@ -282,7 +266,8 @@ namespace TCS
         static void writeIDs()
         {
             File.Delete(@"D:\VS Repos\Applications\TCS\TCS\docs\ids.tcs");
-            StreamWriter sw = new StreamWriter("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\ids.tcs");
+
+            StreamWriter sw = new StreamWriter(@"D:\VS Repos\Applications\TCS\TCS\docs\ids.tcs");
 
             for (int i = 0; i < ids.Count; i++)
             {
@@ -294,24 +279,23 @@ namespace TCS
         static void writeSettings(Settings in_settings)
         {
             File.Delete(@"D:\VS Repos\Applications\TCS\TCS\docs\settings.tcs");
-            StreamWriter sw = new StreamWriter("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\settings.tcs");
+
+            StreamWriter sw = new StreamWriter(@"D:\VS Repos\Applications\TCS\TCS\docs\settings.tcs");
 
             sw.WriteLine("AMOUNT OF MONTHS UNTIL EXPIRATION");
-            sw.WriteLine(in_settings.getMonths());
+            sw.WriteLine(in_settings.Months);
             sw.WriteLine("DISPLAY SERVICE");
-            sw.WriteLine(in_settings.getServiceDisp());
+            sw.WriteLine(in_settings.ServiceDisp);
             sw.WriteLine("DISPLAY AMOUNT");
-            sw.WriteLine(in_settings.getAmountDisp());
+            sw.WriteLine(in_settings.AmountDisp);
             sw.Close();
         }
 
         static void writeCert(Certificate in_cert)
         {
-            if (File.Exists("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\certificates\\" + in_cert.ID + ".tcs"))
-            {
-                File.Delete("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\certificates\\" + in_cert.ID + ".tcs");
-            }
-            StreamWriter sw = new StreamWriter("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\certificates\\" + in_cert.ID + ".tcs");
+            if (File.Exists(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + in_cert.ID + ".tcs")) File.Delete(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + in_cert.ID + ".tcs");
+            
+            StreamWriter sw = new StreamWriter(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + in_cert.ID + ".tcs");
 
             sw.WriteLine(in_cert.ID);
             sw.WriteLine(in_cert.name);
@@ -336,25 +320,6 @@ namespace TCS
 
         static void createPDF(Certificate in_cert)
         {
-            string tempDate = in_cert.date.ToString();
-            string tempExpDate = in_cert.expDate.ToString();
-            string tempCode = "";
-
-            for (int i = 0; i < 11; i++)
-            {
-                tempDate = tempDate.Remove(tempDate.Length - 1);
-                tempExpDate = tempExpDate.Remove(tempExpDate.Length - 1);
-
-                if (i < 10)
-                {
-                    tempCode = tempCode + in_cert.Code.ElementAt<char>(i).ToString() + "  ";
-                }
-                else if (i < 11)
-                {
-                    tempCode = tempCode + in_cert.Code.ElementAt<char>(i).ToString();
-                }
-            }
-
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
             PdfDocument document = new PdfDocument();
@@ -370,7 +335,7 @@ namespace TCS
             XFont font_normal = new XFont("Georgia", 12, XFontStyle.Regular);
             XFont font_small = new XFont("Georgia", 10, XFontStyle.Regular);
             XBrush blueBrush = new XSolidBrush(XColor.FromArgb(79, 100, 157));
-            XImage image = XImage.FromFile("D:\\VS Repos\\Applications\\TCS\\TCS\\graphics\\TCS_Gift_Certificate_Full.png");
+            XImage image = XImage.FromFile(@"D:\VS Repos\Applications\TCS\TCS\graphics\TCS_Gift_Certificate_Full.png");
 
             XRect dear_Rect = new XRect(85, 95, 400, 30);
             XRect from_Rect_1 = new XRect(445, 524, 160, 50);
@@ -383,6 +348,10 @@ namespace TCS
             XRect redeem_Rect = new XRect(368, 710, 20, 20);
             XRect amount_Rect = new XRect(510, 583, 30, 30);
             XRect code_Rect = new XRect(100, 747, 250, 20);
+
+            string tempDate = TrimDate(in_cert.date);
+            string tempExpDate = TrimDate(in_cert.expDate);
+            string tempCode = FluffCode(in_cert.Code);
 
             gfx.DrawImage(image, 0, 0);
             tf.DrawString(in_cert.name, font_big, blueBrush, dear_Rect);
@@ -406,41 +375,29 @@ namespace TCS
             var apiKey = EnvironmentData.SENDGRID_APIKEY;
             var client = new SendGridClient(apiKey);
             var message = new SendGridMessage();
+
+            // CREATING EMAIL MESSAGE
             message.SetFrom(new EmailAddress("deb@debrataubenslag.com", "Debra Taubenslag"));
             message.AddTo(new EmailAddress(in_info.toEmail, in_info.toName));
             message.AddCc(new EmailAddress(in_info.fromEmail, in_info.fromName));
             //message.AddCc(new EmailAddress("deb@debrataubenslag.com", "Debra Taubenslag"));
             message.SetSubject("A Transformational Gift From " + in_info.fromName);
             message.AddContent(MimeType.Html, "<p style=\"font-family:'Georgia';color:#4f649d\"><strong style=\"font-size:25px\">Surprise " + in_info.toName + "!!</strong><br />" + in_info.fromName + " has sent you a Gift Certificate for the transformational healing services of <strong><i>Debra Taubenslag</i></strong>.<br />Be sure to download and save the attached certificate for future use.<br />To learn more about <strong><i>Debra Taubenslag</i></strong> and what you can use this certificate for please go to <a href=\"https://www.debrataubenslag.com\">debrataubenslag.com.</a><br /><br />Yours Truly,<br /><i style=\"font-size:25px\">Debra Taubenslag</i><br /><i>The Transformational Mentor</i></p>");
-            message.AddAttachment("TCS_Gift_Certificate_" + in_info.id + ".pdf", Convert.ToBase64String(File.ReadAllBytes("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\pdfs\\" + in_info.id + "_pdf.pdf")));
+            message.AddAttachment("TCS_Gift_Certificate_" + in_info.id + ".pdf", Convert.ToBase64String(File.ReadAllBytes(@"D:\VS Repos\Applications\TCS\TCS\docs\pdfs\" + in_info.id + "_pdf.pdf")));
 
             var response = await client.SendEmailAsync(message).ConfigureAwait(false);
         }
 
-        public struct EmailInfo
-        {
-            public string id { get; }
-            public string toName { get; }
-            public string fromName { get; }
-            public string toEmail { get; }
-            public string fromEmail { get; }
-
-            public EmailInfo(string in_id, string in_toName, string in_fromName, string in_toEmail, string in_fromEmail)
-            {
-                id = in_id;
-                toName = in_toName;
-                fromName = in_fromName;
-                toEmail = in_toEmail;
-                fromEmail = in_fromEmail;
-            }
-        }
-
+        // PUBLIC CUSTOM DATA TYPE
         public class Certificate
         {
+            // PRIVATE VARIABLES
             string id;
             string code;
             bool[] redeem;
             DateTime[] redeemDates;
+
+            // PUBLIC VARIABLES
             public string ID 
             { 
                 get { return id; }
@@ -461,6 +418,7 @@ namespace TCS
             public DateTime expDate { get; }
             public DateTime[] RedeemDates { get { return redeemDates; } }
 
+            // CONSTRUCTORS
             public Certificate()
             {
                 name = "DOES NOT EXIST";
@@ -492,7 +450,7 @@ namespace TCS
                 service = in_service;
                 amount = in_amount;
                 date = in_date;
-                expDate = date.AddMonths(in_settings.getMonths());
+                expDate = date.AddMonths(in_settings.Months);
                 redeem = new bool[in_rAmount];
                 redeemDates = new DateTime[in_rAmount];
 
@@ -560,37 +518,42 @@ namespace TCS
                 sr.Close();
             }
         
+            // PUBLIC FUNCTIONS
             public void redeemCert()
             {
-                for (int i = 0; i < redeem.Length; i++)
+                if (!(DateTime.Now > expDate))
                 {
-                    if (!redeem[i])
+                    for (int i = 0; i < redeem.Length; i++)
                     {
-                        redeem[i] = true;
-                        redeemDates[i] = DateTime.Now;
-                        break;
+                        if (!redeem[i])
+                        {
+                            redeem[i] = true;
+                            redeemDates[i] = DateTime.Now;
+                            break;
+                        }
                     }
                 }
             }
 
             public bool redemptionState()
             {
+                if (DateTime.Now > expDate) return true;
+
                 for (int i = 0; i < Redeem.Length; i++)
                 {
-                    if (Redeem[i] == true)
-                    {
-                        return true;
-                    }
+                    if (Redeem[i] == true) return true;
                 }
+
                 return false;
             }
 
+            // PRIVATE FUNCTIONS
             void generateID()
             {
-                string tempID = name[0].ToString() + fromName[0].ToString() + toEmail[0].ToString() + fromEmail[0].ToString() + message[0].ToString() + service[2].ToString() + service[10].ToString() + redeem.Length.ToString();
+                string tempID = name[0].ToString() + fromName[0].ToString() + toEmail[0].ToString() + fromEmail[0].ToString() + message[0].ToString() + service[2].ToString() + service[service.Length - 1].ToString() + redeem.Length.ToString();
                 int multiple = 0;
 
-                foreach (string id in ids)
+                for (int i = 0; i < ids.Count; i++)
                 {
                     multiple += ((tempID + multiple.ToString()) == id) ? 1 : 0;
                 }
@@ -600,20 +563,56 @@ namespace TCS
             void generateCode()
             {
                 Random rand = new Random();
+                bool uniqueCode = false;
 
-                for (int i = 0; i < 11; i++)
+                while (!uniqueCode)
                 {
-                    if (i < 2 || (i > 4 && i < 8))
+                    for (int i = 0; i < 11; i++)
                     {
-                        code = code + ((char)(rand.Next(26) + 65)).ToString();
+                        code = (i < 2 || (i > 4 && i < 8)) ? (code + ((char)(rand.Next(26) + 65)).ToString()) : (code + rand.Next(10).ToString());                        
+                    }
+
+                    if (ids.Count == 0)
+                    {
+                        uniqueCode = true;
                     }
                     else
                     {
-                        code = code + rand.Next(10).ToString();
+                        for (int i = 0; i < ids.Count; i++)
+                        {
+                            Certificate temp = new Certificate(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + ids[i] + ".tcs");
+
+                            if (code == temp.code)
+                            {
+                                uniqueCode = false;
+                                break;
+                            }
+                            uniqueCode = true;
+                        }
                     }
                 }
+            }        
+        }
+
+        // PRIVATE CUSTOM DATA TYPE
+        struct EmailInfo // NECCESSARY INFORMATION TO SEND A EMAIL IN A DATA CONTAINER
+        {
+            // PUBLIC VARIABLES
+            public string id { get; }
+            public string toName { get; }
+            public string fromName { get; }
+            public string toEmail { get; }
+            public string fromEmail { get; }
+
+            // CONSTRUCTORS
+            public EmailInfo(string in_id, string in_toName, string in_fromName, string in_toEmail, string in_fromEmail)
+            {
+                id = in_id;
+                toName = in_toName;
+                fromName = in_fromName;
+                toEmail = in_toEmail;
+                fromEmail = in_fromEmail;
             }
-        
         }
     }
 }

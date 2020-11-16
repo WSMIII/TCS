@@ -17,7 +17,7 @@
                     <MenuItem Header="_Open Certificate" Click="openCert_Click"/>
                 </MenuItem>
                 <MenuItem Header="_Redeem Certificate" Click="redeemCert_Click"/>
-                <MenuItem Header="_Settings" />
+                <MenuItem Header="_Settings" Click="settings_Click" />
             </Menu>
             <Grid>
                 <Grid.RowDefinitions>
