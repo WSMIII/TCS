@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:TCS"
       mc:Ignorable="d" 
       d:Width="1400" d:Height="800"
-      Background="#fcfcf2" d:DesignHeight="1146.599">
+      Background="#fcfcf2">
     <ScrollViewer HorizontalScrollBarVisibility="Auto">
         <DockPanel>
             <Frame Name="MainFrame">
@@ -59,24 +59,25 @@
                     <TextBlock Text="Exp. Date: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="550,190,0,0" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="30"/>
                     <TextBlock x:Name="expDateInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="720,195,0,0" Grid.Column="1" Style="{StaticResource LightText}" FontSize="25" />
                     <TextBlock Text="RCPT Email: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,240,0,0" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="30" />
-                    <TextBlock x:Name="toEmailInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="275,245,0,0" Width="260" Grid.Column="1" Style="{StaticResource LightText}" FontSize="25" />
-                    <TextBlock Text="Sender Email: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="550,240,0,0" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="30" />
-                    <TextBlock x:Name="fromEmailInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="780,245,0,0" Width="260" Grid.Column="1" Style="{StaticResource LightText}" FontSize="25" />
-                    <TextBlock Text="Service: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,290,0,0" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="30" />
-                    <TextBlock x:Name="serviceInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,295,0,0" Grid.Column="1" Style="{StaticResource LightText}" FontSize="25" />
-                    <TextBlock Text="Amount: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,340,0,0" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="30" />
-                    <TextBlock x:Name="serviceAmountInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="215,345,0,0" Grid.Column="1" Style="{StaticResource LightText}" FontSize="25" />
-                    <TextBlock Text="Message " HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,400,0,0" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="30" />
-                    <ScrollViewer HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,435,0,0" Grid.Column="1" Width="700" Height="200">
+                    <TextBlock x:Name="toEmailInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="275,245,0,0" Grid.Column="1" Style="{StaticResource LightText}" FontSize="25" />
+                    <TextBlock Text="Sender Email: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,290,0,0" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="30" />
+                    <TextBlock x:Name="fromEmailInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="300,295,0,0" Grid.Column="1" Style="{StaticResource LightText}" FontSize="25" />
+                    <TextBlock Text="Service: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,340,0,0" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="30" />
+                    <TextBlock x:Name="serviceInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,345,0,0" Grid.Column="1" Style="{StaticResource LightText}" FontSize="25" />
+                    <TextBlock Text="Amount: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,390,0,0" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="30" />
+                    <TextBlock x:Name="serviceAmountInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="215,395,0,0" Grid.Column="1" Style="{StaticResource LightText}" FontSize="25" />
+                    <TextBlock Text="Message " HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,450,0,0" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="30" />
+                    <ScrollViewer HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,485,0,0" Grid.Column="1" Width="700" Height="200">
                         <TextBlock x:Name="messageInfo" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Top" Width="700" Height="1000" Style="{StaticResource LightText}" FontSize="25" />
                     </ScrollViewer>
-                    <TextBlock Text="Redemption Amount: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,650,0,0" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="30"/>
-                    <TextBlock x:Name="amountInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="410,655,0,0" Grid.Column="1" Style="{StaticResource LightText}" FontSize="25" />
-                    <TextBlock x:Name="redeemText" Text="This has been redeemed   times on the the dates below." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,705,0,0" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="25" />
-                    <ScrollViewer HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,735,0,20" Grid.Column="1" Width="800" Height="250">
+                    <TextBlock Text="Redemption Amount: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,700,0,0" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="30"/>
+                    <TextBlock x:Name="amountInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="410,705,0,0" Grid.Column="1" Style="{StaticResource LightText}" FontSize="25" />
+                    <TextBlock x:Name="redeemText" Text="This has been redeemed   times on the the dates below." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,755,0,0" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="25" />
+                    <ScrollViewer HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,785,0,20" Grid.Column="1" Width="800" Height="250">
                         <TextBlock x:Name="redeemInfo" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Width="800" Height="1000" Style="{StaticResource LightText}" FontSize="20" />
-                    </ScrollViewer> 
-                    
+                    </ScrollViewer>
+                    <TextBlock Text="Code: " HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="70,1050,0,0" Style="{StaticResource HeavyText}" FontSize="30" />
+                    <TextBlock x:Name="codeInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="170,1055,0,20" Style="{StaticResource LightText}" FontSize="25" />
                 </Grid>
                 <Button x:Name="backButton" Click="backButton_Click"  Style="{StaticResource BaseButton2}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15" Grid.Row="0" Width="100" Height="50" Cursor="Hand">
                     <Image Source="D:\VS Repos\Applications\TCS\TCS\graphics\TCS_back_img_1.png" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,0,0,0" Width="80"/>

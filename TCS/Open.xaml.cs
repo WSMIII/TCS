@@ -46,6 +46,7 @@ namespace TCS
             serviceInfo.Text = "";
             serviceAmountInfo.Text = "";
             messageInfo.Text = "";
+            codeInfo.Text = "";
             amountInfo.Text = "";
             redeemText.Text = "This has been redeemed # times on the the dates below.";
             redeemInfo.Text = "";
@@ -167,6 +168,7 @@ namespace TCS
                 serviceInfo.Text = in_cert.service;
                 serviceAmountInfo.Text = "$" + in_cert.amount.ToString();
                 messageInfo.Text = in_cert.message;
+                codeInfo.Text = in_cert.Code;
 
                 for (int i = 0; i < in_cert.Redeem.Length; i++) // HOW MANY HAVE BEEN REDEEMED
                 {
@@ -199,6 +201,7 @@ namespace TCS
                 serviceInfo.Text = "N/A";
                 serviceAmountInfo.Text = "N/A";
                 messageInfo.Text = "N/A";
+                codeInfo.Text = "N/A";
                 amountInfo.Text = maxAmountUse.ToString();
                 redeemText.Text = "This has been redeemed " + amountRedeemed.ToString() + " times on the the dates below.";
                 redeemInfo.Text = "N/A";

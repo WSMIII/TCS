@@ -126,5 +126,10 @@ namespace TCS
         {
             dispAmountButton.Content = (dispAmountButton.Content == null) ? "X" : null;
         }
+
+        private void rootButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

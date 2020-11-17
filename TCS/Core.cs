@@ -54,6 +54,9 @@ namespace TCS
             readMain();
             readIDs();
             readSettings();
+
+            if (DateTime.Now.Month > lastDate.Month) amountMonth = 0; // RESETTING EVERY NEW MONTH
+            else if (DateTime.Now.Year > lastDate.Year) amountYear = 0; // RESETTING EVERY NEW YEAR
         }
 
         // DECONSTRUCTOR
@@ -76,7 +79,7 @@ namespace TCS
             ids.Add(cert.ID);
 
             writeCert(cert);
-            createPDF(cert);
+            createPDF(cert, in_settings);
 
             amountAllTime += 1;
             amountYear += 1;
@@ -142,11 +145,11 @@ namespace TCS
 
                 if (in_code == temp.Code)
                 {
+                    if (!temp.redemptionState()) amountRedeemed++;
+
                     temp.redeemCert();
                     writeCert(temp);
 
-                    if (!temp.redemptionState()) amountRedeemed++;
-                    
                     return temp;
                 }
             }
@@ -191,6 +194,9 @@ namespace TCS
             {
                 switch (sr.ReadLine())
                 {
+                    case "LAST ACCESS DATE":
+                        lastDate = DateTime.Parse(sr.ReadLine());
+                        break;
                     case "AMOUNT OF CERTIFICATES CREATED--ALL TIME":
                         amountAllTime = Int32.Parse(sr.ReadLine());
                         break;
@@ -250,6 +256,8 @@ namespace TCS
 
             StreamWriter sw = new StreamWriter(@"D:\VS Repos\Applications\TCS\TCS\docs\main.tcs");
 
+            sw.WriteLine("LAST ACCESS DATE");
+            sw.WriteLine(DateTime.Now);
             sw.WriteLine("AMOUNT OF CERTIFICATES CREATED--ALL TIME");
             sw.WriteLine(amountAllTime);
             sw.WriteLine("AMOUNT OF CERTIFICATES CREATED--THIS YEAR");
@@ -318,7 +326,7 @@ namespace TCS
             sw.Close();
         }
 
-        static void createPDF(Certificate in_cert)
+        static void createPDF(Certificate in_cert, Settings in_settings)
         {
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
@@ -335,7 +343,7 @@ namespace TCS
             XFont font_normal = new XFont("Georgia", 12, XFontStyle.Regular);
             XFont font_small = new XFont("Georgia", 10, XFontStyle.Regular);
             XBrush blueBrush = new XSolidBrush(XColor.FromArgb(79, 100, 157));
-            XImage image = XImage.FromFile(@"D:\VS Repos\Applications\TCS\TCS\graphics\TCS_Gift_Certificate_Full.png");
+            XImage image = (in_settings.ServiceDisp) ? XImage.FromFile(@"D:\VS Repos\Applications\TCS\TCS\graphics\TCS_Gift_Certificate_Full.png") : XImage.FromFile(@"D:\VS Repos\Applications\TCS\TCS\graphics\TCS_Gift_Certificate_No_Service.png");
 
             XRect dear_Rect = new XRect(85, 95, 400, 30);
             XRect from_Rect_1 = new XRect(445, 524, 160, 50);
@@ -358,15 +366,19 @@ namespace TCS
             tf.DrawString(in_cert.fromName, font_big, blueBrush, from_Rect_1);
             tf.DrawString(in_cert.name, font_normal, blueBrush, to_Rect);
             tf.DrawString(in_cert.fromName, font_normal, blueBrush, from_Rect_2);
-            tf.DrawString(in_cert.service, font_normal, blueBrush, service_Rect);
             tf.DrawString(tempDate, font_small, blueBrush, isDate_Rect);
             tf.DrawString(tempExpDate, font_small, blueBrush, expDate_Rect);
-            tf.DrawString(in_cert.Redeem.Length.ToString(), font_big, blueBrush, redeem_Rect);
-            tf.DrawString("$" + in_cert.amount.ToString(), font_hugeBold, blueBrush, amount_Rect);
             tf.Alignment = XParagraphAlignment.Center;
             tf.DrawString(in_cert.message, font_normal, blueBrush, msg_Rect);
             tf.DrawString(tempCode, font_bigBold, blueBrush, code_Rect);
 
+            if (in_settings.ServiceDisp)
+            {
+                tf.DrawString(in_cert.service, font_normal, blueBrush, service_Rect);
+                tf.DrawString(in_cert.Redeem.Length.ToString(), font_big, blueBrush, redeem_Rect);
+            }
+            if (in_settings.AmountDisp) tf.DrawString("$" + in_cert.amount.ToString(), font_hugeBold, blueBrush, amount_Rect);
+            
             document.Save("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\pdfs\\" + in_cert.ID + "_pdf.pdf");
         }
 
@@ -543,7 +555,6 @@ namespace TCS
                 {
                     if (Redeem[i] == true) return true;
                 }
-
                 return false;
             }
 
