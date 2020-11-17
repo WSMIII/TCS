@@ -28,6 +28,8 @@ namespace TCS
         // RESET PAGE TO BLANK SLATE
         public void baseState()
         {
+            Core.curCert = 0;
+
             // RESETTING DATA FIELDS IN LOOKUP FORM
             toName.Text = "";
             fromName.Text = "";
@@ -117,37 +119,51 @@ namespace TCS
         // LOOKUP CERTIFICATE BUTTON
         void lookupCert_Click(object sender, RoutedEventArgs e)
         {
-            Core.Certificate cert;
+            Core.Certificate cert = null;
 
             if (toName.Text.ToString().Length > 0)
             {
-                cert = Core.lookupCert(toName.Text.ToString(), 0);
-                connectToCertificate(cert);
+                cert = Core.lookupCert(toName.Text.ToString().ToLower(), 0);
             }
             else if (fromName.Text.ToString().Length > 0)
             {
-                cert = Core.lookupCert(fromName.Text.ToString(), 1);
-                connectToCertificate(cert);
+                cert = Core.lookupCert(fromName.Text.ToString().ToLower(), 1);
             }
             else if (toEmail.Text.ToString().Length > 0)
             {
-                cert = Core.lookupCert(toEmail.Text.ToString(), 2);
-                connectToCertificate(cert);
+                cert = Core.lookupCert(toEmail.Text.ToString().ToLower(), 2);
             }
             else if (fromEmail.Text.ToString().Length > 0)
             {
-                cert = Core.lookupCert(fromEmail.Text.ToString(), 3);
-                connectToCertificate(cert);
+                cert = Core.lookupCert(fromEmail.Text.ToString().ToLower(), 3);
             }
             else if (code.Text.ToString().Length > 0)
             {
                 cert = Core.lookupCert(code.Text.ToString(), 4);
-                connectToCertificate(cert);
             }
             else if (id.Text.ToString().Length > 0)
             {
                 cert = Core.lookupCert(id.Text.ToString(), 5);
-                connectToCertificate(cert);
+            }
+
+            connectToCertificate(cert);
+        }
+
+        void nextCertButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Core.curCert < Core.certsFound.Count - 1)
+            {
+                Core.curCert++;
+                connectToCertificate(Core.certsFound[Core.curCert]);
+            }
+        }
+
+        void prevCertButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Core.curCert > 0)
+            {
+                Core.curCert--;
+                connectToCertificate(Core.certsFound[Core.curCert]);
             }
         }
 

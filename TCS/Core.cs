@@ -20,6 +20,9 @@ namespace TCS
 {
     public static class Core
     {
+        public static int curCert = 0;
+        public static List<Certificate> certsFound = new List<Certificate>();
+
         //THE LAST DATE THIS APPLICATION WAS OPENED
         static DateTime lastDate;
 
@@ -68,7 +71,7 @@ namespace TCS
 
             for (int i = 0; i < emailQueue.Count; i++)
             {
-                SendMail(emailQueue[i]).Wait();
+                //SendMail(emailQueue[i]).Wait();
             }
         }
 
@@ -89,51 +92,48 @@ namespace TCS
 
         public static Certificate lookupCert(string in_text, int in_case)
         {
-            switch(in_case)
+            certsFound.RemoveAll(CertsFoundPredicate);
+            curCert = 0;
+
+            string textMatch = "";
+
+            for (int i = 0; i < ids.Count; i++)
             {
-                case 0:
-                    for (int i = 0; i < ids.Count; i++)
-                    {
-                        Certificate temp = new Certificate(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + ids[i] + ".tcs");
-                        if (in_text == temp.name) return temp;
-                    }
-                    break;
-                case 1:
-                    for (int i = 0; i < ids.Count; i++)
-                    {
-                        Certificate temp = new Certificate(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + ids[i] + ".tcs");
-                        if (in_text == temp.fromName) return temp;
-                    }
-                    break;
-                case 2:
-                    for (int i = 0; i < ids.Count; i++)
-                    {
-                        Certificate temp = new Certificate(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + ids[i] + ".tcs");
-                        if (in_text == temp.toEmail) return temp;
-                    }
-                    break;
-                case 3:
-                    for (int i = 0; i < ids.Count; i++)
-                    {
-                        Certificate temp = new Certificate(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + ids[i] + ".tcs");
-                        if (in_text == temp.fromEmail) return temp;
-                    }
-                    break;
-                case 4:
-                    for (int i = 0; i < ids.Count; i++)
-                    {
-                        Certificate temp = new Certificate(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + ids[i] + ".tcs");
-                        if (in_text == temp.Code) return temp;
-                    }
-                    break;
-                default:
-                    for (int i = 0; i < ids.Count; i++)
-                    {
-                        Certificate temp = new Certificate(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + ids[i] + ".tcs");
-                        if (in_text == temp.ID) return temp;
-                    }
-                    break;
+                Certificate temp = new Certificate(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + ids[i] + ".tcs");
+
+                switch (in_case)
+                {
+                    case 0:
+                        textMatch = temp.name.ToLower();
+                        break;
+                    case 1:
+                        textMatch = temp.fromName.ToLower();
+                        break;
+                    case 2:
+                        textMatch = temp.toEmail.ToLower();
+                        break;
+                    case 3:
+                        textMatch = temp.fromEmail.ToLower();
+                        break;
+                    case 4:
+                        textMatch = temp.Code;
+                        break;
+                    default:
+                        textMatch = temp.ID;
+                        break;
+                }
+
+                if (in_text.Length >= 5)
+                {
+                    if (textMatch.Contains(in_text.Remove(in_text.Length - 2))) certsFound.Add(temp);
+                }
+                else
+                {
+                    if (textMatch.Contains(in_text) || in_text == textMatch) certsFound.Add(temp);
+                }
             }
+            if (certsFound.Count > 0) return certsFound[curCert];
+
             return new Certificate();
         }
 
@@ -183,6 +183,11 @@ namespace TCS
                 code = (i < 10) ? code + in_code.ElementAt<char>(i).ToString() + "  " : code + in_code.ElementAt<char>(i).ToString();
             }
             return code;
+        }
+
+        public static bool CertsFoundPredicate(Certificate in_cert)
+        {
+            return true;
         }
 
         // PRIVATE FUNCTIONS
@@ -343,7 +348,7 @@ namespace TCS
             XFont font_normal = new XFont("Georgia", 12, XFontStyle.Regular);
             XFont font_small = new XFont("Georgia", 10, XFontStyle.Regular);
             XBrush blueBrush = new XSolidBrush(XColor.FromArgb(79, 100, 157));
-            XImage image = (in_settings.ServiceDisp) ? XImage.FromFile(@"D:\VS Repos\Applications\TCS\TCS\graphics\TCS_Gift_Certificate_Full.png") : XImage.FromFile(@"D:\VS Repos\Applications\TCS\TCS\graphics\TCS_Gift_Certificate_No_Service.png");
+            XImage image = (in_settings.ServiceDisp && in_cert.service != "$$$") ? XImage.FromFile(@"D:\VS Repos\Applications\TCS\TCS\graphics\TCS_Gift_Certificate_Full.png") : XImage.FromFile(@"D:\VS Repos\Applications\TCS\TCS\graphics\TCS_Gift_Certificate_No_Service.png");
 
             XRect dear_Rect = new XRect(85, 95, 400, 30);
             XRect from_Rect_1 = new XRect(445, 524, 160, 50);
@@ -368,16 +373,15 @@ namespace TCS
             tf.DrawString(in_cert.fromName, font_normal, blueBrush, from_Rect_2);
             tf.DrawString(tempDate, font_small, blueBrush, isDate_Rect);
             tf.DrawString(tempExpDate, font_small, blueBrush, expDate_Rect);
-            tf.Alignment = XParagraphAlignment.Center;
-            tf.DrawString(in_cert.message, font_normal, blueBrush, msg_Rect);
-            tf.DrawString(tempCode, font_bigBold, blueBrush, code_Rect);
-
-            if (in_settings.ServiceDisp)
+            if (in_settings.ServiceDisp && in_cert.service != "$$$")
             {
                 tf.DrawString(in_cert.service, font_normal, blueBrush, service_Rect);
                 tf.DrawString(in_cert.Redeem.Length.ToString(), font_big, blueBrush, redeem_Rect);
             }
-            if (in_settings.AmountDisp) tf.DrawString("$" + in_cert.amount.ToString(), font_hugeBold, blueBrush, amount_Rect);
+            if (in_settings.AmountDisp || in_cert.service == "$$$") tf.DrawString("$" + in_cert.amount.ToString(), font_hugeBold, blueBrush, amount_Rect);
+            tf.Alignment = XParagraphAlignment.Center;
+            tf.DrawString(in_cert.message, font_normal, blueBrush, msg_Rect);
+            tf.DrawString(tempCode, font_bigBold, blueBrush, code_Rect);
             
             document.Save("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\pdfs\\" + in_cert.ID + "_pdf.pdf");
         }
@@ -392,7 +396,7 @@ namespace TCS
             message.SetFrom(new EmailAddress("deb@debrataubenslag.com", "Debra Taubenslag"));
             message.AddTo(new EmailAddress(in_info.toEmail, in_info.toName));
             message.AddCc(new EmailAddress(in_info.fromEmail, in_info.fromName));
-            //message.AddCc(new EmailAddress("deb@debrataubenslag.com", "Debra Taubenslag"));
+            message.AddCc(new EmailAddress("deb@debrataubenslag.com", "Debra Taubenslag"));
             message.SetSubject("A Transformational Gift From " + in_info.fromName);
             message.AddContent(MimeType.Html, "<p style=\"font-family:'Georgia';color:#4f649d\"><strong style=\"font-size:25px\">Surprise " + in_info.toName + "!!</strong><br />" + in_info.fromName + " has sent you a Gift Certificate for the transformational healing services of <strong><i>Debra Taubenslag</i></strong>.<br />Be sure to download and save the attached certificate for future use.<br />To learn more about <strong><i>Debra Taubenslag</i></strong> and what you can use this certificate for please go to <a href=\"https://www.debrataubenslag.com\">debrataubenslag.com.</a><br /><br />Yours Truly,<br /><i style=\"font-size:25px\">Debra Taubenslag</i><br /><i>The Transformational Mentor</i></p>");
             message.AddAttachment("TCS_Gift_Certificate_" + in_info.id + ".pdf", Convert.ToBase64String(File.ReadAllBytes(@"D:\VS Repos\Applications\TCS\TCS\docs\pdfs\" + in_info.id + "_pdf.pdf")));

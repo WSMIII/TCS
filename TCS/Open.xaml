@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:TCS"
       mc:Ignorable="d" 
       d:Width="1400" d:Height="800"
-      Background="#fcfcf2">
+      Background="#fcfcf2" d:DesignHeight="1551.637">
     <ScrollViewer HorizontalScrollBarVisibility="Auto">
         <DockPanel>
             <Frame Name="MainFrame">
@@ -77,9 +77,19 @@
                         <TextBlock x:Name="redeemInfo" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Width="800" Height="1000" Style="{StaticResource LightText}" FontSize="20" />
                     </ScrollViewer>
                     <TextBlock Text="Code: " HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="70,1050,0,0" Style="{StaticResource HeavyText}" FontSize="30" />
-                    <TextBlock x:Name="codeInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="170,1055,0,20" Style="{StaticResource LightText}" FontSize="25" />
+                    <TextBlock x:Name="codeInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="170,1055,0,0" Style="{StaticResource LightText}" FontSize="25" />
+                    <Button x:Name="nextCertButton" Click="nextCertButton_Click" Style="{StaticResource BaseButton3}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="805,1100,0,20" Grid.Column="1" Width="100" Height="50" Cursor="Hand">
+                        <Image Source="D:\VS Repos\Applications\TCS\TCS\graphics\TCS_back_img_1.png" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5,0,0,0" Width="80">
+                            <Image.RenderTransform>
+                                <ScaleTransform ScaleX="-1" />
+                            </Image.RenderTransform>
+                        </Image>
+                    </Button>
+                    <Button x:Name="prevCertButton" Click="prevCertButton_Click" Style="{StaticResource BaseButton3}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,1100,0,20" Grid.Column="1" Width="100" Height="50" Cursor="Hand">
+                        <Image Source="D:\VS Repos\Applications\TCS\TCS\graphics\TCS_back_img_1.png" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,0,0,0" Width="80"/>
+                    </Button>
                 </Grid>
-                <Button x:Name="backButton" Click="backButton_Click"  Style="{StaticResource BaseButton2}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15" Grid.Row="0" Width="100" Height="50" Cursor="Hand">
+                <Button x:Name="backButton" Click="backButton_Click" Style="{StaticResource BaseButton2}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15" Grid.Row="0" Width="100" Height="50" Cursor="Hand">
                     <Image Source="D:\VS Repos\Applications\TCS\TCS\graphics\TCS_back_img_1.png" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,0,0,0" Width="80"/>
                 </Button>
                 <TextBlock Text="Lookup Certificate" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Style="{StaticResource HeavyText}" FontSize="80" />
