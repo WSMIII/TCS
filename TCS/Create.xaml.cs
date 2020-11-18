@@ -174,7 +174,7 @@ namespace TCS
             switch (comboBox1.Text.ToString())
             {
                 case "$$$":
-                    in_redempAmount = 1;
+                    in_redempAmount = 0;
                     break;
                 case "Spiritual Hypnosis (1)":
                     in_redempAmount = 1;
@@ -216,7 +216,7 @@ namespace TCS
             }
             if (redeemAmount.Text.ToString() != "")
             {
-                in_redempAmount = Int32.Parse(redeemAmount.Text.ToString());
+                in_redempAmount = (redeemAmount.Text.ToString() == "-1") ? 1000 : Int32.Parse(redeemAmount.Text.ToString());
             }
         }
 

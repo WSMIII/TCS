@@ -182,7 +182,7 @@ namespace TCS
                 toEmailInfo.Text = in_cert.toEmail;
                 fromEmailInfo.Text = in_cert.fromEmail;
                 serviceInfo.Text = in_cert.service;
-                serviceAmountInfo.Text = "$" + in_cert.amount.ToString();
+                serviceAmountInfo.Text = "$" + in_cert.Amount.ToString();
                 messageInfo.Text = in_cert.message;
                 codeInfo.Text = in_cert.Code;
 

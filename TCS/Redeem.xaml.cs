@@ -110,7 +110,7 @@ namespace TCS
 
             if (redeemCode.Text.ToString().Length > 0)
             {
-                cert = Core.redeemCert(redeemCode.Text.ToString());
+                cert = Core.redeemCert(redeemCode.Text.ToString(), serviceUsed.Text.ToString(), Int32.Parse(amountUsed.Text.ToString()));
                 connectToCertificate(cert);
             }
         }
@@ -123,36 +123,66 @@ namespace TCS
 
             if (in_cert.name != "DOES NOT EXIST") // WAS FOUND
             {
-                resolveStateText.Text = (((DateTime.Now > in_cert.RedeemDates[in_cert.RedeemDates.Length - 1].AddSeconds(2)) && in_cert.RedeemDates[in_cert.RedeemDates.Length - 1] != new DateTime()) || DateTime.Now > in_cert.expDate) 
-                    ? "Certificate has been redeemed already or it is past the expiration date! Refer below for more information." 
+                if (in_cert.Redeem.Length == 0)
+                {
+                    if (in_cert.Amount == 0 || Int32.Parse(amountUsed.Text.ToString()) > in_cert.LastAmount)
+                    {
+                        resolveStateText.Text = "Certificate holds no more value or not enough. Refer below for more information.";
+                    }
+                    else
+                    {
+                        resolveStateText.Text = "Certificate has been successfully redeemed! Refer below for more information.";
+                    }
+
+                    maxAmountUse = in_cert.Redeem.Length;
+
+                    redeemInfo.Text = maxAmountUse.ToString();
+                    amountText.Text = "This has been redeemed " + in_cert.MoneyDates.Count.ToString() + " times on the dates below.";
+
+                    if (in_cert.MoneyDates.Count > 0) // WHETHER TO DISPLAY REMPTION TIME STAMPS IF THEY EXIST
+                    {
+                        amountInfo.Text = ""; // RESETTING TIME STAMP FIELD
+
+                        for (int i = 0; i < in_cert.MoneyDates.Count; i++) // DISPLAYING REDEMPTION TIME STAMPS
+                        {
+                            amountInfo.Text = amountInfo.Text.ToString() + (i + 1) + ")   " + Core.TrimDate(DateTime.Now) + "-(" + in_cert.MoneyDates[i].serviceRedeem + ": " + in_cert.MoneyDates[i].amountRedeem + ")\n";
+                        }
+                    }
+                    else amountInfo.Text = "";
+                }
+                else
+                {
+                    resolveStateText.Text = (((DateTime.Now > in_cert.RedeemDates[in_cert.RedeemDates.Length - 1].AddSeconds(2)) && in_cert.RedeemDates[in_cert.RedeemDates.Length - 1] != new DateTime()) || DateTime.Now > in_cert.expDate)
+                    ? "Certificate has been redeemed already or it is past the expiration date! Refer below for more information."
                     : "Certificate has been successfully redeemed! Refer below for more information.";
+
+                    for (int i = 0; i < in_cert.Redeem.Length; i++) // HOW MANY HAVE BEEN REDEEMED
+                    {
+                        amountRedeemed += (in_cert.Redeem[i]) ? 1 : 0;
+                    }
+                    maxAmountUse = in_cert.Redeem.Length;
+
+                    redeemInfo.Text = maxAmountUse.ToString();
+                    amountText.Text = "This has been redeemed " + amountRedeemed.ToString() + " times on the dates below.";
+
+                    if (amountRedeemed > 0) // WHETHER TO DISPLAY REMPTION TIME STAMPS IF THEY EXIST
+                    {
+                        amountInfo.Text = ""; // RESETTING TIME STAMP FIELD
+
+                        for (int i = 0; i < amountRedeemed; i++) // DISPLAYING REDEMPTION TIME STAMPS
+                        {
+                            if (in_cert.RedeemDates[i] != new DateTime()) amountInfo.Text = amountInfo.Text.ToString() + (i + 1) + ")   " + Core.TrimDate(in_cert.RedeemDates[i]) + "\n";
+                        }
+                    }
+                    else amountInfo.Text = "";
+                }
                 
                 toName.Text = in_cert.name;
                 fromName.Text = in_cert.fromName;
                 date.Text = Core.TrimDate(in_cert.date);
                 expDate.Text = Core.TrimDate(in_cert.expDate);
                 serviceInfo.Text = in_cert.service;
-                serviceAmountInfo.Text = "$" + in_cert.amount.ToString();
-
-                for (int i = 0; i < in_cert.Redeem.Length; i++) // HOW MANY HAVE BEEN REDEEMED
-                {
-                    amountRedeemed += (in_cert.Redeem[i]) ? 1 : 0;
-                }
-                maxAmountUse = in_cert.Redeem.Length;
-
-                redeemInfo.Text = maxAmountUse.ToString();
-                amountText.Text = "This has been redeemed " + amountRedeemed.ToString() + " times on the dates below.";
-
-                if (amountRedeemed > 0) // WHETHER TO DISPLAY REMPTION TIME STAMPS IF THEY EXIST
-                {
-                    amountInfo.Text = ""; // RESETTING TIME STAMP FIELD
-
-                    for (int i = 0; i < amountRedeemed; i++) // DISPLAYING REDEMPTION TIME STAMPS
-                    {
-                        if (in_cert.RedeemDates[i] != new DateTime()) amountInfo.Text = amountInfo.Text.ToString() + (i + 1) + ")   " + Core.TrimDate(in_cert.RedeemDates[i]) + "\n";
-                    }
-                }
-                else amountInfo.Text = "";
+                serviceAmountInfo.Text = "$" + in_cert.Amount.ToString();
             }
             else // WASN'T FOUND 
             {

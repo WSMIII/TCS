@@ -35,9 +35,13 @@
                     </Grid.ColumnDefinitions>
                     <Rectangle Grid.Column="0" Fill="#e8e6e6" />
                     <Rectangle Grid.Column="1" Fill="#dcd6ff" />
-                    <TextBlock Text="Redemption Code" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-100,0,0" Grid.Column="0" Style="{StaticResource HeavyText}" FontSize="40" />
-                    <TextBox x:Name="redeemCode" Width="450" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" Grid.Column="0" FontSize="15" />
-                    <Button x:Name="redeemButton" Click="redeemButton_Click"  Style="{StaticResource BaseButton3}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,120,0,0" Content="Redeem" Grid.Column="0" Width="300" Height="50" FontSize="30" />
+                    <TextBlock Text="Redemption Code" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,200,0,0" Grid.Column="0" Style="{StaticResource HeavyText}" FontSize="40" />
+                    <TextBox x:Name="redeemCode" Width="450" Height="30" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,250,0,0" Grid.Column="0" FontSize="15" />
+                    <TextBlock Text="Service Being Used" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,300,0,0" Grid.Column="0" Style="{StaticResource HeavyText}" FontSize="30" />
+                    <TextBox x:Name="serviceUsed" Width="100" Height="30" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="330,300,0,0" Grid.Column="0" FontSize="20" />
+                    <TextBlock Text="Amount Being Used" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,350,0,0" Grid.Column="0" Style="{StaticResource HeavyText}" FontSize="30" />
+                    <TextBox x:Name="amountUsed" Text="0" Width="100" Height="30" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="330,350,0,0" Grid.Column="0" FontSize="20" />
+                    <Button x:Name="redeemButton" Click="redeemButton_Click"  Style="{StaticResource BaseButton3}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,430,0,0" Content="Redeem" Grid.Column="0" Width="300" Height="50" FontSize="30" />
                     <TextBlock x:Name="resolveStateText" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0" Width="700" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="40" />
                     <TextBlock Text="To: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,200,0,0" Grid.Column="1" Style="{StaticResource HeavyText}" FontSize="30" />
                     <TextBlock x:Name="toName" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,205,0,0" Width="340" Grid.Column="1" Style="{StaticResource LightText}" FontSize="25" />

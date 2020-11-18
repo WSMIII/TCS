@@ -140,7 +140,7 @@ namespace TCS
             return new Certificate();
         }
 
-        public static Certificate redeemCert(string in_code)
+        public static Certificate redeemCert(string in_code, string in_service, int in_amount)
         {
             for (int i = 0; i < ids.Count; i++)
             {
@@ -148,12 +148,24 @@ namespace TCS
 
                 if (in_code == temp.Code)
                 {
-                    if (!temp.redemptionState()) amountRedeemed++;
+                    if (temp.Redeem.Length == 0)
+                    {
+                        amountRedeemed++;
 
-                    temp.redeemCert();
-                    writeCert(temp);
+                        temp.redeemCert(in_service, in_amount);
+                        writeCert(temp);
 
-                    return temp;
+                        return temp;
+                    }
+                    else
+                    {
+                        if (!temp.redemptionState()) amountRedeemed++;
+
+                        temp.redeemCert();
+                        writeCert(temp);
+
+                        return temp;
+                    }
                 }
             }
             return new Certificate();
@@ -170,7 +182,7 @@ namespace TCS
         {
             string date = in_date.ToString();
 
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 11; i++)
             {
                 date = date.Remove(date.Length - 1);
             }
@@ -320,7 +332,7 @@ namespace TCS
             sw.WriteLine(in_cert.fromEmail);
             sw.WriteLine(in_cert.message);
             sw.WriteLine(in_cert.service);
-            sw.WriteLine(in_cert.amount);
+            sw.WriteLine(in_cert.Amount);
             sw.WriteLine(in_cert.date);
             sw.WriteLine(in_cert.expDate);
             sw.WriteLine(in_cert.Redeem.Length);
@@ -328,6 +340,12 @@ namespace TCS
             {
                 sw.WriteLine(in_cert.Redeem[i]);
                 sw.WriteLine(in_cert.RedeemDates[i]);
+            }
+            sw.WriteLine(in_cert.MoneyDates.Count);
+            for (int i = 0; i < in_cert.MoneyDates.Count; i++)
+            {
+                sw.WriteLine(in_cert.MoneyDates[i].serviceRedeem);
+                sw.WriteLine(in_cert.MoneyDates[i].amountRedeem);
             }
             sw.WriteLine(in_cert.Code);
 
@@ -361,7 +379,7 @@ namespace TCS
             XRect service_Rect = new XRect(90, 711, 150, 50);
             XRect isDate_Rect = new XRect(360, 647, 90, 20);
             XRect expDate_Rect = new XRect(392, 681, 90, 20);
-            XRect redeem_Rect = new XRect(368, 710, 20, 20);
+            XRect redeem_Rect = new XRect(361, 710, 20, 20);
             XRect amount_Rect = new XRect(510, 583, 30, 30);
             XRect code_Rect = new XRect(100, 747, 250, 20);
 
@@ -379,9 +397,16 @@ namespace TCS
             if (in_settings.ServiceDisp && in_cert.service != "$$$")
             {
                 tf.DrawString(in_cert.service, font_normal, blueBrush, service_Rect);
-                tf.DrawString(in_cert.Redeem.Length.ToString(), font_big, blueBrush, redeem_Rect);
+                if (in_cert.Redeem.Length.ToString() == "1000")
+                {
+                    tf.DrawString("INF", font_big, blueBrush, redeem_Rect);
+                }
+                else
+                {
+                    tf.DrawString(in_cert.Redeem.Length.ToString(), font_big, blueBrush, redeem_Rect);
+                }
             }
-            if (in_settings.AmountDisp || in_cert.service == "$$$") tf.DrawString("$" + in_cert.amount.ToString(), font_hugeBold, blueBrush, amount_Rect);
+            if (in_settings.AmountDisp || in_cert.service == "$$$") tf.DrawString("$" + in_cert.Amount.ToString(), font_hugeBold, blueBrush, amount_Rect);
             tf.Alignment = XParagraphAlignment.Center;
             tf.DrawString(in_cert.message, font_normal, blueBrush, msg_Rect);
             tf.DrawString(tempCode, font_bigBold, blueBrush, code_Rect);
@@ -410,11 +435,26 @@ namespace TCS
         // PUBLIC CUSTOM DATA TYPE
         public class Certificate
         {
+            public struct MoneyRedeem
+            {
+                public string serviceRedeem { get; }
+                public int amountRedeem { get; }
+
+                public MoneyRedeem(string in_serviceR, int in_amountR)
+                {
+                    serviceRedeem = in_serviceR;
+                    amountRedeem = in_amountR;
+                }
+            }
+
             // PRIVATE VARIABLES
             string id;
             string code;
+            double amount;
+            double lastAmount;
             bool[] redeem;
             DateTime[] redeemDates;
+            List<MoneyRedeem> moneyDates = new List<MoneyRedeem>();
 
             // PUBLIC VARIABLES
             public string ID 
@@ -431,11 +471,13 @@ namespace TCS
             { 
                 get { return code; }
             }
-            public double amount { get; }
+            public double Amount { get { return amount; } }
+            public double LastAmount { get { return lastAmount; } }
             public bool[] Redeem { get { return redeem; } }
             public DateTime date { get; }
             public DateTime expDate { get; }
             public DateTime[] RedeemDates { get { return redeemDates; } }
+            public List<MoneyRedeem> MoneyDates { get { return moneyDates; } }
 
             // CONSTRUCTORS
             public Certificate()
@@ -452,10 +494,12 @@ namespace TCS
                 message = in_other.message;
                 service = in_other.service;
                 amount = in_other.amount;
+                lastAmount = in_other.amount;
                 redeem = in_other.redeem;
                 date = in_other.date;
                 date = in_other.expDate;
                 redeemDates = in_other.redeemDates;
+                moneyDates = in_other.moneyDates;
 
                 generateCode();
             }
@@ -468,6 +512,7 @@ namespace TCS
                 message = in_message;
                 service = in_service;
                 amount = in_amount;
+                lastAmount = amount;
                 date = in_date;
                 expDate = date.AddMonths(in_settings.Months);
                 redeem = new bool[in_rAmount];
@@ -481,7 +526,7 @@ namespace TCS
                 StreamReader sr = new StreamReader(in_path);
                 string line = sr.ReadLine();
 
-                for (int i = 0; i < 12; i++)
+                for (int i = 0; i < 13; i++)
                 {
                     switch (i)
                     {
@@ -508,6 +553,7 @@ namespace TCS
                             break;
                         case 7:
                             amount = Double.Parse(line);
+                            lastAmount = amount;
                             break;
                         case 8:
                             date = DateTime.Parse(line);
@@ -529,6 +575,14 @@ namespace TCS
                             }
                             break;
                         case 11:
+                            int moneyRedeemSize = Int32.Parse(line);
+
+                            for (int k = 0; k < moneyRedeemSize; k++)
+                            {
+                                moneyDates.Add(new MoneyRedeem(sr.ReadLine(), Int32.Parse(sr.ReadLine())));
+                            }
+                            break;
+                        case 12:
                             code = line;
                             break;
                     }
@@ -551,6 +605,16 @@ namespace TCS
                             break;
                         }
                     }
+                }
+            }
+
+            public void redeemCert(string in_service, int in_amount)
+            {
+                if (amount > in_amount)
+                {
+                    lastAmount = amount;
+                    amount -= in_amount;
+                    moneyDates.Add(new MoneyRedeem(in_service, in_amount));
                 }
             }
 
