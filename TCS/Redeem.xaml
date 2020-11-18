@@ -59,7 +59,7 @@
                     </ScrollViewer>
                 </Grid>
                 <Button x:Name="backButton" Click="backButton_Click"  Style="{StaticResource BaseButton2}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15" Grid.Row="0" Width="100" Height="50">
-                    <Image Source="D:\VS Repos\Applications\TCS\TCS\graphics\TCS_back_img_1.png" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,0,0,0" Width="80"/>
+                    <Image Loaded="Image_Loaded" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,0,0,0" Width="80"/>
                 </Button>
                 <TextBlock Text="Redeem Certificate" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Style="{StaticResource HeavyText}" FontSize="80" />
             </Grid>

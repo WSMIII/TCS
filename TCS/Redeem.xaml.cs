@@ -168,5 +168,14 @@ namespace TCS
                 amountInfo.Text = "N/A";
             }
         }
+
+        private void Image_Loaded(object sender, RoutedEventArgs e)
+        {
+            Image img = sender as Image;
+            if (img != null)
+            {
+                img.Source = new BitmapImage(new Uri(Core.root + @"graphics\TCS_back_img_1.png"));
+            }
+        }
     }
 }

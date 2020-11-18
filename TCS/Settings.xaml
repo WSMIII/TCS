@@ -25,7 +25,7 @@
                     <RowDefinition Height="2*" />
                 </Grid.RowDefinitions>
                 <Button x:Name="backButton" Click="backButton_Click"  Style="{StaticResource BaseButton2}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15" Grid.Row="0" Width="100" Height="50">
-                    <Image Source="D:\VS Repos\Applications\TCS\TCS\graphics\TCS_back_img_1.png" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,0,0,0" Grid.Row="0" Width="80"/>
+                    <Image Loaded="Image_Loaded" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,0,0,0" Grid.Row="0" Width="80"/>
                 </Button>
                 <TextBlock Text="Settings" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Style="{StaticResource HeavyText}" FontSize="100" />
                 <TextBlock x:Name="curExpAmount" Text="Current amount of months until expiration for future gift certificates is: " HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0" Grid.Row="1" Style="{StaticResource HeavyText}" FontSize="25" />
@@ -36,9 +36,6 @@
                 <Button x:Name="dispServiceButton" Click="dispServiceButton_Click" Style="{StaticResource BaseButton2}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="500,190,0,0" Grid.Row="1" Width="50" Height="50" FontSize="30" />
                 <TextBlock Text="Display amount on gift certificate?" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Margin="0,280,0,0" Style="{StaticResource HeavyText}" FontSize="25"/>
                 <Button x:Name="dispAmountButton" Click="dispAmountButton_Click"  Style="{StaticResource BaseButton2}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="510,270,0,0" Grid.Row="1" Width="50" Height="50" FontSize="30" />
-                <TextBlock Text="Root Path" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,360,0,0" Grid.Row="1" Style="{StaticResource HeavyText}" FontSize="25" />
-                <TextBox x:Name="rootPath" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Margin="-130,390,0,0" Width="500" Height="30" FontFamily="Georgia" FontWeight="Light" FontSize="20" Foreground="#4f649d" />
-                <Button x:Name="rootButton" Click="rootButton_Click" Style="{StaticResource BaseButton2}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="490,380,0,0" Content="Submit" Grid.Row="1" Width="100" Height="50" FontSize="20" />
             </Grid>
         </DockPanel>
     </ScrollViewer>

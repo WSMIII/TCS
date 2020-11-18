@@ -120,8 +120,13 @@ namespace TCS
         // CREATE CERTIFICATE BUTTON
         void generateCert_Click(object sender, RoutedEventArgs e)
         {
-            switch(checkBoxTitle.Text.ToString())
-            {
+            int redemptionAmount = 0;
+            double certAmount = 0;
+
+            autofillData(ref redemptionAmount, ref certAmount);
+
+            switch (checkBoxTitle.Text.ToString())
+            {                
                 // INITIAL CHECK
                 case "Click 'Create' when ready.":
                     checkBoxTitle.Text = "Are you sure? Check info below to make sure!";
@@ -129,7 +134,7 @@ namespace TCS
                     break;
                 // CONFIRMATION CHECK
                 case "Are you sure? Check info below to make sure!":
-                    Core.createCert(toName.Text.ToString(), fromName.Text.ToString(), toEmailText.Text.ToString(), fromEmailText.Text.ToString(), message.Text.ToString(), comboBox1.Text.ToString(), Double.Parse(serviceAmount.Text.ToString()), Int32.Parse(redeemAmount.Text.ToString()), DateTime.Now, window_c.states.settings);
+                    Core.createCert(toName.Text.ToString(), fromName.Text.ToString(), toEmailText.Text.ToString(), fromEmailText.Text.ToString(), message.Text.ToString(), comboBox1.Text.ToString(), certAmount, redemptionAmount, DateTime.Parse(certDate.Text.ToString() + " 12:00:00AM"), window_c.states.settings);
                     checkBoxTitle.Text = "Enter email information below.";
                     toEmailForm();
                     toEmailTextBox.Text = toEmailText.Text.ToString();
@@ -161,6 +166,58 @@ namespace TCS
             serviceText.Text = comboBox1.Text.ToString();
             amountText.Text = serviceAmount.Text.ToString();
             messageText.Text = message.Text.ToString();
+        }
+
+        // FILL IN CERTAIN DATA FIELDS DEPENDING ON SERVICE
+        void autofillData(ref int in_redempAmount, ref double in_certAmount)
+        {
+            switch (comboBox1.Text.ToString())
+            {
+                case "$$$":
+                    in_redempAmount = 1;
+                    break;
+                case "Spiritual Hypnosis (1)":
+                    in_redempAmount = 1;
+                    in_certAmount = 200;
+                    break;
+                case "Spiritual Hypnosis (3)":
+                    in_redempAmount = 3;
+                    in_certAmount = 525;
+                    break;
+                case "Spiritual Hypnosis (6)":
+                    in_redempAmount = 6;
+                    in_certAmount = 900;
+                    break;
+                case "Intuitive Guidance":
+                    in_redempAmount = 1;
+                    in_certAmount = 125;
+                    break;
+                case "(4 Week Class) Deep Stress Relief and Healing":
+                    in_redempAmount = 1;
+                    in_certAmount = 40;
+                    break;
+                case "(4 Week Class) Soul Travel for Discovery of Self":
+                    in_redempAmount = 1;
+                    in_certAmount = 40;
+                    break;
+                case "(4 Week Class) Psychic/Mediumship Development":
+                    in_redempAmount = 1;
+                    in_certAmount = 40;
+                    break;
+                case "(4 Week Class) Spiritual Hands on Healing":
+                    in_redempAmount = 1;
+                    in_certAmount = 40;
+                    break;
+            }
+
+            if (serviceAmount.Text.ToString() != "Amount")
+            {
+                in_certAmount = Double.Parse(serviceAmount.Text.ToString());
+            }
+            if (redeemAmount.Text.ToString() != "")
+            {
+                in_redempAmount = Int32.Parse(redeemAmount.Text.ToString());
+            }
         }
 
         // ADJUST VISIBILITY OF DATA FIELDS TO DISPLAY CERTIFICATE INFORMATION
@@ -225,6 +282,24 @@ namespace TCS
 
             toEmailTextBox.Visibility = Visibility.Collapsed;
             fromEmailTextBox.Visibility = Visibility.Collapsed;
+        }
+
+        private void Image_Loaded(object sender, RoutedEventArgs e)
+        {
+            Image img = sender as Image;
+            if (img != null)
+            {
+                img.Source = new BitmapImage(new Uri(Core.root + @"graphics\TCS_reset_form_img.png"));
+            }
+        }
+
+        private void Image_Loaded_1(object sender, RoutedEventArgs e)
+        {
+            Image img = sender as Image;
+            if (img != null)
+            {
+                img.Source = new BitmapImage(new Uri(Core.root + @"graphics\TCS_back_img_1.png"));
+            }
         }
     }
 }

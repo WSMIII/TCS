@@ -127,9 +127,13 @@ namespace TCS
             dispAmountButton.Content = (dispAmountButton.Content == null) ? "X" : null;
         }
 
-        private void rootButton_Click(object sender, RoutedEventArgs e)
+        private void Image_Loaded(object sender, RoutedEventArgs e)
         {
-
+            Image img = sender as Image;
+            if (img != null)
+            {
+                img.Source = new BitmapImage(new Uri(Core.root + @"graphics\TCS_back_img_1.png"));
+            }
         }
     }
 }

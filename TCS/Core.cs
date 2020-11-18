@@ -23,8 +23,11 @@ namespace TCS
         public static int curCert = 0;
         public static List<Certificate> certsFound = new List<Certificate>();
 
+        // APPLICATION DATA
+        public static string root = @"D:\VS Repos\Applications\TCS\TCS\";
+
         //THE LAST DATE THIS APPLICATION WAS OPENED
-        static DateTime lastDate;
+        static DateTime lastDate;        
 
         //CERTIFICATE DATA
         static int amountAllTime = 0;
@@ -99,7 +102,7 @@ namespace TCS
 
             for (int i = 0; i < ids.Count; i++)
             {
-                Certificate temp = new Certificate(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + ids[i] + ".tcs");
+                Certificate temp = new Certificate(root + @"docs\certificates\" + ids[i] + ".tcs");
 
                 switch (in_case)
                 {
@@ -141,7 +144,7 @@ namespace TCS
         {
             for (int i = 0; i < ids.Count; i++)
             {
-                Certificate temp = new Certificate(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + ids[i] + ".tcs");
+                Certificate temp = new Certificate(root + @"docs\certificates\" + ids[i] + ".tcs");
 
                 if (in_code == temp.Code)
                 {
@@ -167,7 +170,7 @@ namespace TCS
         {
             string date = in_date.ToString();
 
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < 12; i++)
             {
                 date = date.Remove(date.Length - 1);
             }
@@ -193,7 +196,7 @@ namespace TCS
         // PRIVATE FUNCTIONS
         static void readMain()
         {
-            StreamReader sr = new StreamReader(@"D:\VS Repos\Applications\TCS\TCS\docs\main.tcs");
+            StreamReader sr = new StreamReader(root + @"docs\main.tcs");
 
             while (!sr.EndOfStream)
             {
@@ -224,7 +227,7 @@ namespace TCS
 
         static void readIDs()
         {
-            StreamReader sr = new StreamReader(@"D:\VS Repos\Applications\TCS\TCS\docs\ids.tcs");
+            StreamReader sr = new StreamReader(root + @"docs\ids.tcs");
 
             while (!sr.EndOfStream)
             {
@@ -235,7 +238,7 @@ namespace TCS
 
         static void readSettings()
         {
-            StreamReader sr = new StreamReader(@"D:\VS Repos\Applications\TCS\TCS\docs\settings.tcs");
+            StreamReader sr = new StreamReader(root + @"docs\settings.tcs");
 
             while (!sr.EndOfStream)
             {
@@ -257,9 +260,9 @@ namespace TCS
 
         static void writeMain()
         {
-            File.Delete(@"D:\VS Repos\Applications\TCS\TCS\docs\main.tcs");
+            File.Delete(root + @"docs\main.tcs");
 
-            StreamWriter sw = new StreamWriter(@"D:\VS Repos\Applications\TCS\TCS\docs\main.tcs");
+            StreamWriter sw = new StreamWriter(root + @"docs\main.tcs");
 
             sw.WriteLine("LAST ACCESS DATE");
             sw.WriteLine(DateTime.Now);
@@ -278,9 +281,9 @@ namespace TCS
 
         static void writeIDs()
         {
-            File.Delete(@"D:\VS Repos\Applications\TCS\TCS\docs\ids.tcs");
+            File.Delete(root + @"docs\ids.tcs");
 
-            StreamWriter sw = new StreamWriter(@"D:\VS Repos\Applications\TCS\TCS\docs\ids.tcs");
+            StreamWriter sw = new StreamWriter(root + @"docs\ids.tcs");
 
             for (int i = 0; i < ids.Count; i++)
             {
@@ -291,9 +294,9 @@ namespace TCS
 
         static void writeSettings(Settings in_settings)
         {
-            File.Delete(@"D:\VS Repos\Applications\TCS\TCS\docs\settings.tcs");
+            File.Delete(root + @"docs\settings.tcs");
 
-            StreamWriter sw = new StreamWriter(@"D:\VS Repos\Applications\TCS\TCS\docs\settings.tcs");
+            StreamWriter sw = new StreamWriter(root + @"docs\settings.tcs");
 
             sw.WriteLine("AMOUNT OF MONTHS UNTIL EXPIRATION");
             sw.WriteLine(in_settings.Months);
@@ -306,9 +309,9 @@ namespace TCS
 
         static void writeCert(Certificate in_cert)
         {
-            if (File.Exists(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + in_cert.ID + ".tcs")) File.Delete(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + in_cert.ID + ".tcs");
+            if (File.Exists(root + @"docs\certificates\" + in_cert.ID + ".tcs")) File.Delete(root + @"docs\certificates\" + in_cert.ID + ".tcs");
             
-            StreamWriter sw = new StreamWriter(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + in_cert.ID + ".tcs");
+            StreamWriter sw = new StreamWriter(root + @"docs\certificates\" + in_cert.ID + ".tcs");
 
             sw.WriteLine(in_cert.ID);
             sw.WriteLine(in_cert.name);
@@ -348,7 +351,7 @@ namespace TCS
             XFont font_normal = new XFont("Georgia", 12, XFontStyle.Regular);
             XFont font_small = new XFont("Georgia", 10, XFontStyle.Regular);
             XBrush blueBrush = new XSolidBrush(XColor.FromArgb(79, 100, 157));
-            XImage image = (in_settings.ServiceDisp && in_cert.service != "$$$") ? XImage.FromFile(@"D:\VS Repos\Applications\TCS\TCS\graphics\TCS_Gift_Certificate_Full.png") : XImage.FromFile(@"D:\VS Repos\Applications\TCS\TCS\graphics\TCS_Gift_Certificate_No_Service.png");
+            XImage image = (in_settings.ServiceDisp && in_cert.service != "$$$") ? XImage.FromFile(root + @"graphics\TCS_Gift_Certificate_Full.png") : XImage.FromFile(root + @"graphics\TCS_Gift_Certificate_No_Service.png");
 
             XRect dear_Rect = new XRect(85, 95, 400, 30);
             XRect from_Rect_1 = new XRect(445, 524, 160, 50);
@@ -383,7 +386,7 @@ namespace TCS
             tf.DrawString(in_cert.message, font_normal, blueBrush, msg_Rect);
             tf.DrawString(tempCode, font_bigBold, blueBrush, code_Rect);
             
-            document.Save("D:\\VS Repos\\Applications\\TCS\\TCS\\docs\\pdfs\\" + in_cert.ID + "_pdf.pdf");
+            document.Save(root + @"docs\pdfs\" + in_cert.ID + "_pdf.pdf");
         }
 
         static async Task SendMail(EmailInfo in_info)
@@ -399,7 +402,7 @@ namespace TCS
             message.AddCc(new EmailAddress("deb@debrataubenslag.com", "Debra Taubenslag"));
             message.SetSubject("A Transformational Gift From " + in_info.fromName);
             message.AddContent(MimeType.Html, "<p style=\"font-family:'Georgia';color:#4f649d\"><strong style=\"font-size:25px\">Surprise " + in_info.toName + "!!</strong><br />" + in_info.fromName + " has sent you a Gift Certificate for the transformational healing services of <strong><i>Debra Taubenslag</i></strong>.<br />Be sure to download and save the attached certificate for future use.<br />To learn more about <strong><i>Debra Taubenslag</i></strong> and what you can use this certificate for please go to <a href=\"https://www.debrataubenslag.com\">debrataubenslag.com.</a><br /><br />Yours Truly,<br /><i style=\"font-size:25px\">Debra Taubenslag</i><br /><i>The Transformational Mentor</i></p>");
-            message.AddAttachment("TCS_Gift_Certificate_" + in_info.id + ".pdf", Convert.ToBase64String(File.ReadAllBytes(@"D:\VS Repos\Applications\TCS\TCS\docs\pdfs\" + in_info.id + "_pdf.pdf")));
+            message.AddAttachment("TCS_Gift_Certificate_" + in_info.id + ".pdf", Convert.ToBase64String(File.ReadAllBytes(root + @"docs\pdfs\" + in_info.id + "_pdf.pdf")));
 
             var response = await client.SendEmailAsync(message).ConfigureAwait(false);
         }
@@ -595,7 +598,7 @@ namespace TCS
                     {
                         for (int i = 0; i < ids.Count; i++)
                         {
-                            Certificate temp = new Certificate(@"D:\VS Repos\Applications\TCS\TCS\docs\certificates\" + ids[i] + ".tcs");
+                            Certificate temp = new Certificate(root + @"docs\certificates\" + ids[i] + ".tcs");
 
                             if (code == temp.code)
                             {

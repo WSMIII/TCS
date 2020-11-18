@@ -36,7 +36,7 @@
                     <Rectangle Grid.Column="0" Fill="#e8e6e6" />
                     <Rectangle Grid.Column="1" Fill="#dcd6ff" />
                     <Button x:Name="resetButton" Click="resetButton_Click"  Style="{StaticResource BaseButton3}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,20,20,0" Grid.Column="0" Width="50" Height="50">
-                        <Image Source="D:\VS Repos\Applications\TCS\TCS\graphics\TCS_reset_form_img.png" HorizontalAlignment="Center" VerticalAlignment="Center" Width="30"/>
+                        <Image Loaded="Image_Loaded" HorizontalAlignment="Center" VerticalAlignment="Center" Width="30"/>
                     </Button>
                     <TextBlock Text="To" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0" Grid.Column="0" Style="{StaticResource HeavyText}" FontSize="25" />
                     <TextBox x:Name="toName" Width="380" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,50,0,0" Grid.Column="0" FontSize="20" />
@@ -89,7 +89,7 @@
                     </ScrollViewer>
                 </Grid>
                 <Button x:Name="backButton" Click="backButton_Click"  Style="{StaticResource BaseButton2}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15" Grid.Row="0" Width="100" Height="50">
-                    <Image Source="D:\VS Repos\Applications\TCS\TCS\graphics\TCS_back_img_1.png" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,0,0,0" Width="80"/>
+                    <Image Loaded="Image_Loaded_1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,0,0,0" Width="80"/>
                 </Button>
                 <TextBlock Text="Create Certificate" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Style="{StaticResource HeavyText}" FontSize="80" />
             </Grid>

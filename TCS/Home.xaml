@@ -59,7 +59,7 @@
                     <Button x:Name="redeemCert" Click="redeemCert_Click" Style="{StaticResource BaseButton1}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,300,0,0" Content="Redeem Certificate" Grid.Column="2" Width="400" Height="75" FontSize="30" />
                     <Button x:Name="exitSys" Click="exitSys_Click" Style="{StaticResource BaseButton1}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,400,0,0" Content="Exit" Grid.Column="2" Width="400" Height="75" FontSize="30" />
                 </Grid>
-                <Image Source="D:\VS Repos\Applications\TCS\TCS\graphics\TCS_home_img.png" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" />
+                <Image Loaded="Image_Loaded" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" />
             </Grid>
         </DockPanel>
     </ScrollViewer>
